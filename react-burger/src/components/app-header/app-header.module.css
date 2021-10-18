@@ -35,10 +35,10 @@
 
 .button_text {
   display: block;
-  color: #8585AD;
+  color: #8585ad;
   margin-left: 5px;
 }
 
 .button_active {
-    color: #f2f2f2;
-  }
+  color: #f2f2f2;
+}
