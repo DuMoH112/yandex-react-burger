@@ -1,0 +1,33 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  padding: 100px 16px 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 30vh);
+  overflow: scroll;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.totalSum {
+  display: flex;
+  align-items: center;
+}
+
+.totalSum svg {
+  margin-left: 5px;
+}
+
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
