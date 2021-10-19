@@ -1,0 +1,16 @@
+.root {
+  width: auto;
+  height: calc(100vh - 3px);
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+}
+
+.container {
+  display: grid;
+  align-items: flex-start;
+  grid-template-columns: 630px 630px;
+  padding-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+}

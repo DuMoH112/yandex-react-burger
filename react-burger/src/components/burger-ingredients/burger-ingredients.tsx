@@ -26,7 +26,8 @@ function BurgerIngredients(props: any) {
 
   return (
     <section>
-      <div style={{ display: 'flex' }}>
+      <h1 className={`text_type_main-large`}>Соберите бургер</h1>
+      <div className={stylesBurgerIngredients.selection_header} style={{ display: 'flex' }}>
         {
           tabs.map((tab) => (
             <Tab 

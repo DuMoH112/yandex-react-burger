@@ -7,8 +7,26 @@
 .list {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 30vh);
-  overflow: scroll;
+  overflow: hidden;
+}
+
+.scrollable {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 55vh);
+  overflow-y: auto;
+}
+
+.scrollable::-webkit-scrollbar {
+	width: 14px;
+}
+.scrollable::-webkit-scrollbar-track {
+	background: #19191c;
+}
+.scrollable::-webkit-scrollbar-thumb {
+	background: #af5eaa;
+	border: 3px solid #19191c;
+	border-radius: 7px;
 }
 
 .item {

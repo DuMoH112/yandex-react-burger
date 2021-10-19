@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 
 import { 
@@ -12,52 +12,65 @@ import styleBurgerConstructor from './burger-constructor.module.css';
 
 
 const BurgerConstructor = (props: any) => {
+  const [currentBun, setCurrentBun] = useState(props.constructorElements[0]);
+
   const totalPrice = useMemo(() => {
-    let result = 400
+    let result = 0
     props.constructorElements.forEach((element: any) => {
       result += element.price
     });
     return result
   }, [props.constructorElements]);
 
+  const topElement = useMemo(() => {
+    return (
+      <ConstructorElement
+        type="top"
+        isLocked={true}
+        text={`${currentBun.name} (вверх)`}
+        price={currentBun.price}
+        thumbnail={currentBun.image}
+      />
+    )
+  }, [currentBun]);
+
+  const bottomElement = useMemo(() => {
+    return (
+      <ConstructorElement
+        type="bottom"
+        isLocked={true}
+        text={`${currentBun.name} (низ)`}
+        price={currentBun.price}
+        thumbnail={currentBun.image}
+      />
+    )
+  }, [currentBun]);
+
   return (
     <section className={styleBurgerConstructor.root}>
       <div className={`${styleBurgerConstructor.list} `}>
         <div className={`${styleBurgerConstructor.item} mb-4`}>
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text="Краторная булка N-200i (верх)"
-            price={200}
-            thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
-          />
+          {topElement}
         </div>
-        {
-          props.constructorElements.slice(1, -1).map((item: any) => 
-            {
-              // debugger;
-              // addPriceToTotalSum(item.price);
-              // debugger;
-              return (
-                <div className={`${styleBurgerConstructor.item} mb-4`} key={item.name}>
-                  <DragIcon type="primary" />
-                  <ConstructorElement
-                    isLocked={false}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                  />
-                </div>
-          )})
-        }
+        <div className={`${styleBurgerConstructor.scrollable} mb-4`}>
+          {
+            props.constructorElements.slice(1, -1).map((item: any) => 
+              {
+                return (
+                  <div className={`${styleBurgerConstructor.item} mb-4`} key={item.name}>
+                    <DragIcon type="primary" />
+                    <ConstructorElement
+                      isLocked={false}
+                      text={item.name}
+                      price={item.price}
+                      thumbnail={item.image}
+                    />
+                  </div>
+            )})
+          }
+        </div>
         <div className={`${styleBurgerConstructor.item} mb-4`}>
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text="Краторная булка N-200i (низ)"
-            price={200}
-            thumbnail="https://code.s3.yandex.net/react/code/bun-02.png"
-          />
+          {bottomElement}
         </div>
       </div>
       <div className={`${styleBurgerConstructor.total} mt-10`}>
