@@ -1,9 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import stylesBurgerItem from './burger-ingredients-item.module.css';
+import { data } from '../../utils/types'
 
 function BurgerIngredientsItems(props: any) {
   return (
@@ -24,23 +24,10 @@ function BurgerIngredientsItems(props: any) {
       </ul>
     </>
   );
-}
+};
 
-BurgerIngredientsItems.propTypes = { 
-  data: PropTypes.arrayOf(PropTypes.shape({  
-    _id: PropTypes.string,
-    name: PropTypes.string,
-    type: PropTypes.string,
-    proteins: PropTypes.number,
-    fat: PropTypes.number,
-    carbohydrates: PropTypes.number,
-    calories: PropTypes.number,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    image_mobile: PropTypes.string,
-    image_large: PropTypes.string,
-    __v: PropTypes.number
-  })),
+BurgerIngredientsItems.propTypes = {
+  data: data.isRequired
 };
 
 export default BurgerIngredientsItems;

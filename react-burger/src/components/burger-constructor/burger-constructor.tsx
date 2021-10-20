@@ -1,5 +1,4 @@
 import React, {useMemo, useState} from 'react';
-import PropTypes from 'prop-types';
 
 import { 
   ConstructorElement, 
@@ -9,16 +8,18 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styleBurgerConstructor from './burger-constructor.module.css';
+import { data } from '../../utils/types'
 
-
-const BurgerConstructor = (props: any) => {
+function BurgerConstructor(props: any) {
   const [currentBun, setCurrentBun] = useState(props.constructorElements[0]);
 
   const totalPrice = useMemo(() => {
     let result = 0
-    props.constructorElements.forEach((element: any) => {
+    props.constructorElements.slice(1, -1).forEach((element: any) => {
       result += element.price
     });
+
+    result += (currentBun.price * 2);
     return result
   }, [props.constructorElements]);
 
@@ -27,7 +28,7 @@ const BurgerConstructor = (props: any) => {
       <ConstructorElement
         type="top"
         isLocked={true}
-        text={`${currentBun.name} (вверх)`}
+        text={`${currentBun.name} (верх)`}
         price={currentBun.price}
         thumbnail={currentBun.image}
       />
@@ -87,20 +88,7 @@ const BurgerConstructor = (props: any) => {
 };
 
 BurgerConstructor.propTypes = {
-  constructorElements: PropTypes.arrayOf(PropTypes.shape({  
-    _id: PropTypes.string,
-    name: PropTypes.string,
-    type: PropTypes.string,
-    proteins: PropTypes.number,
-    fat: PropTypes.number,
-    carbohydrates: PropTypes.number,
-    calories: PropTypes.number,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    image_mobile: PropTypes.string,
-    image_large: PropTypes.string,
-    __v: PropTypes.number
-  })),
+  constructorElements: data.isRequired
 };
 
 export default BurgerConstructor;
