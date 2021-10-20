@@ -1,0 +1,44 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #1d1d24;
+  box-shadow: 0 0 14px #af5eaa;
+}
+
+.nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 1260px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.button {
+  display: flex;
+  text-decoration: none;
+}
+
+.button:last-child {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.button_text {
+  display: block;
+  color: #8585ad;
+  margin-left: 5px;
+}
+
+.button_active {
+  color: #f2f2f2;
+}
