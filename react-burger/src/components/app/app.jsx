@@ -11,6 +11,7 @@ import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 
+const URL_INGREDIENTS = 'https://norma.nomoreparties.space/api/ingredients';
 
 function App() {
   const [isOpenOrder, setIsOpenOrder] = React.useState(false);
@@ -24,7 +25,7 @@ function App() {
 
   const getProductData = async () => {
     setState({...state, loading: true});
-    const res = await fetch('https://norma.nomoreparties.space/api/ingredients');
+    const res = await fetch(URL_INGREDIENTS);
     const data = await res.json();
     setState({ productData: data.data, loading: false });
   };
