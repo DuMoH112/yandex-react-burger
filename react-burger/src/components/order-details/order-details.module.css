@@ -1,0 +1,15 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  flex: 1;
+}
+
+.root h4 {
+  text-align: center;
+  color: #F2F2F3;
+  text-shadow: 0 0 10px #af5eaa;
+}
