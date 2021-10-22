@@ -3,10 +3,13 @@ import React, {useEffect, useState} from 'react';
 import '@ya.praktikum/react-developer-burger-ui-components';
 
 import stylesApp from './app.module.css';
+
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import Modal from '../modal/modal';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import OrderDetails from '../order-details/order-details';
 
 
 function App() {
@@ -19,7 +22,7 @@ function App() {
     loading: true
   });
 
-  const productData = async () => {
+  const getProductData = async () => {
     setState({...state, loading: true});
     const res = await fetch('https://norma.nomoreparties.space/api/ingredients');
     const data = await res.json();
@@ -27,7 +30,7 @@ function App() {
   };
 
   useEffect(() => {
-    productData();
+    getProductData();
   }, []);
 
   const closeIngredientModal = () => {
@@ -35,7 +38,7 @@ function App() {
     setCurrentIngredient({});
   };
 
-  const openIngredientModal = (item: any) => {
+  const openIngredientModal = (item) => {
     setCurrentIngredient({...item});
     setIsOpenIngredient(true);
   };
@@ -51,7 +54,7 @@ function App() {
   return (
     <div className={stylesApp.root}>
       <AppHeader />
-      {state.loading && 'Загрузка...'}
+      {state.loading && <div className={`${stylesApp.loader} text_type_main-medium`}>Загрузка...</div>}
       {
         !state.loading && 
         <div className={stylesApp.container}> 
@@ -60,14 +63,14 @@ function App() {
           { isOpenIngredient && 
             (
                 <Modal onClick={closeIngredientModal} header="Детали ингредиента">
-                  <div>aaa</div>
+                  <IngredientDetails currentIngredient={currentIngredient}/>
                 </Modal>
             )
           }
           { isOpenOrder && 
             (
                 <Modal onClick={closeOrderModal} header="">
-                  <div>aaa</div>
+                  <OrderDetails />
                 </Modal>
             )
           }
