@@ -34,6 +34,24 @@ function App() {
     getProductData();
   }, []);
 
+  useEffect(() => {
+    const close = (e) => {
+      if(e.keyCode === 27){
+        if(isOpenIngredient) {
+          setIsOpenIngredient(false)
+        }
+        else if(isOpenOrder) {
+          setIsOpenOrder(false);
+        }
+      }
+    }
+
+    window.addEventListener('keydown', close);
+
+    return () => window.removeEventListener('keydown', close);
+
+  },[isOpenIngredient, isOpenOrder]);
+
   const closeIngredientModal = () => {
     setIsOpenIngredient(false);
     setCurrentIngredient({});
