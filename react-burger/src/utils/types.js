@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const data = PropTypes.arrayOf(PropTypes.shape({
+const item = PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -13,6 +13,8 @@ const data = PropTypes.arrayOf(PropTypes.shape({
     image_mobile: PropTypes.string.isRequired,
     image_large: PropTypes.string.isRequired,
     __v: PropTypes.number.isRequired
-}));
+});
 
-export { data };
+const data = PropTypes.arrayOf(item);
+
+export { data, item };
