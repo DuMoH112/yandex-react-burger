@@ -11,7 +11,14 @@ import styleBurgerConstructor from './burger-constructor.module.css';
 import { data } from '../../utils/types'
 
 function BurgerConstructor(props: any) {
-  const [currentBun, setCurrentBun] = useState(props.constructorElements[0]);
+  const [currentBun, setCurrentBun] = useState(
+    Boolean(props.constructorElements[0]) ? 
+    props.constructorElements[0] : 
+    {
+      price: 0,
+      name: null,
+      image: null
+    });
 
   const totalPrice = useMemo(() => {
     let result = 0
