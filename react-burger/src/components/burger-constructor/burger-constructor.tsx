@@ -1,4 +1,5 @@
 import React, {useMemo, useState} from 'react';
+import PropTypes from 'prop-types';
 
 import { 
   ConstructorElement, 
@@ -80,7 +81,7 @@ function BurgerConstructor(props: any) {
           {totalPrice} 
           <CurrencyIcon type="primary" />
         </span>
-        <Button type="primary" size="large">
+        <Button type="primary" size="large" onClick={() => props.openModal()}>
           Оформить заказ
         </Button>
       </div>
@@ -89,7 +90,8 @@ function BurgerConstructor(props: any) {
 };
 
 BurgerConstructor.propTypes = {
-  constructorElements: data.isRequired
+  constructorElements: data.isRequired,
+  openModal: PropTypes.func.isRequired
 };
 
 export default BurgerConstructor;
