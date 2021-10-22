@@ -1,0 +1,29 @@
+.root {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: #1d1d24;
+    box-shadow: 0 0 14px #af5eaa;
+    border-radius: 30px;
+    transform: translateX(-50%) translateY(-50%);
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    width: 600px;
+  }
+  
+  .header h2 {
+    margin: 0;
+    margin-left: 2vw;
+  }
+  
+  .closeButton {
+    margin-right: 2vw;
+    margin-left: auto;
+    border: none;
+    outline: none;
+    background-color: transparent;
+  }

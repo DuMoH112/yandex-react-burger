@@ -1,10 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import BurgerIngredientsItems from '../burger-ingredients-item/burger-ingredients-item';
 import stylesBurgerIngredients from './burger-ingredients.module.css';
 import { data } from '../../utils/types'
+
 
 function BurgerIngredients(props: any) {
   const tabs = [
@@ -43,13 +45,15 @@ function BurgerIngredients(props: any) {
       </div>
       <BurgerIngredientsItems
         data={props.ingredients.filter((el: any) => el.type === current)}
+        openModal={props.openModal}
       />
     </section>
   );
 }
 
 BurgerIngredients.propTypes = {
-  ingredients: data.isRequired
+  ingredients: data.isRequired,
+  openModal: PropTypes.func
 };
 
 export default BurgerIngredients;
