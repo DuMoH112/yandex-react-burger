@@ -1,10 +1,13 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
 
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import stylesModal from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
+
+const modalRoot = document.getElementById("modalRoot") as HTMLElement;
 
 
 function Modal(props: any) {
@@ -17,9 +20,9 @@ function Modal(props: any) {
 
     window.addEventListener('keydown', close);
     return () => window.removeEventListener('keydown', close);
-  },[props.onClick]);
+  }, [props.onClick]);
 
-  return (
+  return ReactDOM.createPortal((
     <ModalOverlay onClick={props.onClick}>
       <div className={`${stylesModal.root}`} onClick={e => e.stopPropagation()}>
         <div className={stylesModal.header}>
@@ -31,7 +34,7 @@ function Modal(props: any) {
         {props.children}
       </div>
     </ModalOverlay>
-  );
+  ), modalRoot);
 };
 
 Modal.propTypes = {
