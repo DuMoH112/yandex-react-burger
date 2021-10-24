@@ -1,4 +1,5 @@
 import React, {useMemo, useState} from 'react';
+import PropTypes from 'prop-types';
 
 import { 
   ConstructorElement, 
@@ -10,13 +11,15 @@ import {
 import styleBurgerConstructor from './burger-constructor.module.css';
 import { data } from '../../utils/types'
 
+
 function BurgerConstructor(props: any) {
   const [currentBun, setCurrentBun] = useState(props.constructorElements[0]);
 
   const totalPrice = useMemo(() => {
     let result = 0
     props.constructorElements.slice(1, -1).forEach((element: any) => {
-      result += element.price
+      if (element.type !== "bun")
+        result += element.price
     });
 
     result += (currentBun.price * 2);
@@ -56,18 +59,19 @@ function BurgerConstructor(props: any) {
         <div className={`${styleBurgerConstructor.scrollable} mb-4`}>
           {
             props.constructorElements.slice(1, -1).map((item: any) => 
-              {
-                return (
-                  <div className={`${styleBurgerConstructor.item} mb-4`} key={item.name}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                      isLocked={false}
-                      text={item.name}
-                      price={item.price}
-                      thumbnail={item.image}
-                    />
-                  </div>
-            )})
+              { 
+                if (item.type !== "bun")
+                  return (
+                    <div className={`${styleBurgerConstructor.item} mb-4`} key={item.name}>
+                      <DragIcon type="primary" />
+                      <ConstructorElement
+                        isLocked={false}
+                        text={item.name}
+                        price={item.price}
+                        thumbnail={item.image}
+                      />
+                    </div>
+                )})
           }
         </div>
         <div className={`${styleBurgerConstructor.item} mb-4`}>
@@ -79,7 +83,7 @@ function BurgerConstructor(props: any) {
           {totalPrice} 
           <CurrencyIcon type="primary" />
         </span>
-        <Button type="primary" size="large">
+        <Button type="primary" size="large" onClick={() => props.openModal()}>
           Оформить заказ
         </Button>
       </div>
@@ -88,7 +92,8 @@ function BurgerConstructor(props: any) {
 };
 
 BurgerConstructor.propTypes = {
-  constructorElements: data.isRequired
+  constructorElements: data.isRequired,
+  openModal: PropTypes.func.isRequired
 };
 
 export default BurgerConstructor;
