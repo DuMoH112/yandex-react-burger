@@ -18,7 +18,8 @@ function BurgerConstructor(props: any) {
   const totalPrice = useMemo(() => {
     let result = 0
     props.constructorElements.slice(1, -1).forEach((element: any) => {
-      result += element.price
+      if (element.type !== "bun")
+        result += element.price
     });
 
     result += (currentBun.price * 2);
@@ -58,18 +59,19 @@ function BurgerConstructor(props: any) {
         <div className={`${styleBurgerConstructor.scrollable} mb-4`}>
           {
             props.constructorElements.slice(1, -1).map((item: any) => 
-              {
-                return (
-                  <div className={`${styleBurgerConstructor.item} mb-4`} key={item.name}>
-                    <DragIcon type="primary" />
-                    <ConstructorElement
-                      isLocked={false}
-                      text={item.name}
-                      price={item.price}
-                      thumbnail={item.image}
-                    />
-                  </div>
-            )})
+              { 
+                if (item.type !== "bun")
+                  return (
+                    <div className={`${styleBurgerConstructor.item} mb-4`} key={item.name}>
+                      <DragIcon type="primary" />
+                      <ConstructorElement
+                        isLocked={false}
+                        text={item.name}
+                        price={item.price}
+                        thumbnail={item.image}
+                      />
+                    </div>
+                )})
           }
         </div>
         <div className={`${styleBurgerConstructor.item} mb-4`}>
