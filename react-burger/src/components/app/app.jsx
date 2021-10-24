@@ -39,40 +39,18 @@ function App() {
     getProductData();
   }, []);
 
-  useEffect(() => {
-    const close = (e) => {
-      if(e.keyCode === 27){
-        if(isOpenIngredient) {
-          setIsOpenIngredient(false)
-        }
-        else if(isOpenOrder) {
-          setIsOpenOrder(false);
-        }
-      }
-    }
-
-    window.addEventListener('keydown', close);
-
-    return () => window.removeEventListener('keydown', close);
-
-  },[isOpenIngredient, isOpenOrder]);
-
-  const closeIngredientModal = () => {
-    setIsOpenIngredient(false);
-    setCurrentIngredient({});
-  };
-
   const openIngredientModal = (item) => {
     setCurrentIngredient({...item});
     setIsOpenIngredient(true);
   };
 
-  const closeOrderModal = () => {
-    setIsOpenOrder(false);
-  };
-
   const openOrderModal = () => {
     setIsOpenOrder(true);
+  };
+
+  const closeModal = () => {
+    setIsOpenIngredient(false);
+    setIsOpenOrder(false);
   };
 
   return (
@@ -88,14 +66,14 @@ function App() {
           <BurgerConstructor constructorElements={state.productData} openModal={openOrderModal}/>
           { isOpenIngredient && 
             (
-                <Modal onClick={closeIngredientModal} header="Детали ингредиента">
+                <Modal onClick={closeModal} header="Детали ингредиента">
                   <IngredientDetails currentIngredient={currentIngredient}/>
                 </Modal>
             )
           }
           { isOpenOrder && 
             (
-                <Modal onClick={closeOrderModal} header="">
+                <Modal onClick={closeModal} header="">
                   <OrderDetails />
                 </Modal>
             )

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -8,6 +8,17 @@ import ModalOverlay from '../modal-overlay/modal-overlay';
 
 
 function Modal(props: any) {
+  useEffect(() => {
+    const close = (e: any) => {
+      if(e.keyCode === 27){
+        props.onClick()
+      }
+    };
+
+    window.addEventListener('keydown', close);
+    return () => window.removeEventListener('keydown', close);
+  },[props.onClick]);
+
   return (
     <ModalOverlay onClick={props.onClick}>
       <div className={`${stylesModal.root}`} onClick={e => e.stopPropagation()}>
