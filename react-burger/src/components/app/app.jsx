@@ -20,14 +20,19 @@ function App() {
 
   const [state, setState] = useState({ 
     productData: [],
-    loading: true
+    isLoading: true,
+    isError: false
   });
 
   const getProductData = async () => {
-    setState({...state, loading: true});
-    const res = await fetch(URL_INGREDIENTS);
-    const data = await res.json();
-    setState({ productData: data.data, loading: false });
+    setState({...state, isLoading: true});
+    try {
+      const res = await fetch(URL_INGREDIENTS);
+      const data = await res.json();
+      setState({ ...state, productData: data.data, isLoading: false });
+    } catch (error) {
+      setState({ ...state, isError: true, isLoading: false });
+    }
   };
 
   useEffect(() => {
@@ -73,9 +78,11 @@ function App() {
   return (
     <div className={stylesApp.root}>
       <AppHeader />
-      {state.loading && <div className={`${stylesApp.loader} text_type_main-medium`}>Загрузка...</div>}
+      {state.isLoading && !state.isError && <div className={`${stylesApp.loader} text_type_main-medium`}>Загрузка...</div>}
+      {state.isError && !state.isLoading && <div className={`${stylesApp.loader} text_type_main-medium`}>Упс! Что-то пошло не так =(</div>}
       {
-        !state.loading && 
+        !state.isLoading && 
+        !state.isError &&
         <div className={stylesApp.container}> 
           <BurgerIngredients ingredients={state.productData} openModal={openIngredientModal}/>
           <BurgerConstructor constructorElements={state.productData} openModal={openOrderModal}/>
