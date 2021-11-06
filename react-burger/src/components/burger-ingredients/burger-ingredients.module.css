@@ -1,5 +1,6 @@
 .selection_header {
-  margin-bottom: 40px;
+  justify-content: center;
+  margin-bottom: 30px;
 }
 
 .card_container {
@@ -9,6 +10,9 @@
   flex-wrap: wrap;
   overflow-y: auto;
   margin: 0;
+  padding: 0;
+  align-content: flex-start;
+  justify-content: center;
 }
 
 .card_container::-webkit-scrollbar {

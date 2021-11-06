@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
   width: 272px;
+  height: 236px;
 }
 
 .price {
@@ -19,5 +21,17 @@
   margin: 0;
   height: 48px;
   text-align: center;
+  color: #f2f2f3;
+}
+
+.count {
+  display: flex;
+  margin-left: auto;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #4c4cff;
   color: #f2f2f3;
 }

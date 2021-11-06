@@ -101,7 +101,7 @@ function BurgerConstructor(props) {
           <CurrencyIcon type="primary" />
         </span>
         <Button type="primary" size="large" onClick={() => {
-          dispatch(getOrderNumber(...constructorIngredients, currentBun, currentBun));
+          dispatch(getOrderNumber([currentBun, ...constructorIngredients, currentBun]));
           props.openModal()
         }}>
           Оформить заказ

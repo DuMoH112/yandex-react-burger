@@ -44,7 +44,7 @@ function BurgerIngredients(props) {
           ))
         }
       </div>
-      <ul className={`${stylesBurgerIngredients.card_container} pl-4 pr-2`}>
+      <ul className={`${stylesBurgerIngredients.card_container}`}>
         {
           ingredients.filter((el) => el.type === current).map((item) => (
             <BurgerIngredientsItem
