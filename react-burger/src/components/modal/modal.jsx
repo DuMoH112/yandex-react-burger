@@ -7,12 +7,12 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import stylesModal from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 
-const modalRoot = document.getElementById("modalRoot") as HTMLElement;
+const modalRoot = document.getElementById("modalRoot");
 
 
-function Modal(props: any) {
+function Modal(props) {
   useEffect(() => {
-    const close = (e: any) => {
+    const close = (e) => {
       if(e.keyCode === 27){
         props.onClick()
       }
@@ -20,7 +20,7 @@ function Modal(props: any) {
 
     window.addEventListener('keydown', close);
     return () => window.removeEventListener('keydown', close);
-  }, [props.onClick]);
+  }, [props]);
 
   return ReactDOM.createPortal((
     <ModalOverlay onClick={props.onClick}>

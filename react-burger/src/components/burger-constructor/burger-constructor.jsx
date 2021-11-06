@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import { 
@@ -9,25 +9,30 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styleBurgerConstructor from './burger-constructor.module.css';
-import { data } from '../../utils/types'
+import { useSelector } from 'react-redux';
 
 
-function BurgerConstructor(props: any) {
-  const [currentBun, setCurrentBun] = useState(props.constructorElements[0]);
+function BurgerConstructor(props) {
+  const { 
+    constructorIngredients,
+    currentBun
+  } = useSelector(store => store.burgerIngredients)
 
   const totalPrice = useMemo(() => {
     let result = 0
-    props.constructorElements.slice(1, -1).forEach((element: any) => {
+    constructorIngredients.slice(1, -1).forEach((element) => {
       if (element.type !== "bun")
         result += element.price
     });
 
-    result += (currentBun.price * 2);
-    return result
-  }, [props.constructorElements]);
+    if (currentBun)
+      result += (currentBun.price * 2);
+
+    return result ? result : 0
+  }, [constructorIngredients, currentBun]);
 
   const topElement = useMemo(() => {
-    return (
+    return currentBun.length == 0 ? (
       <ConstructorElement
         type="top"
         isLocked={true}
@@ -35,11 +40,11 @@ function BurgerConstructor(props: any) {
         price={currentBun.price}
         thumbnail={currentBun.image}
       />
-    )
+    ) : ''
   }, [currentBun]);
 
   const bottomElement = useMemo(() => {
-    return (
+    return currentBun.length == 0 ? (
       <ConstructorElement
         type="bottom"
         isLocked={true}
@@ -47,7 +52,7 @@ function BurgerConstructor(props: any) {
         price={currentBun.price}
         thumbnail={currentBun.image}
       />
-    )
+    ) : ''
   }, [currentBun]);
 
   return (
@@ -58,20 +63,17 @@ function BurgerConstructor(props: any) {
         </div>
         <div className={`${styleBurgerConstructor.scrollable} mb-4`}>
           {
-            props.constructorElements.slice(1, -1).map((item: any) => 
-              { 
-                if (item.type !== "bun")
-                  return (
-                    <div className={`${styleBurgerConstructor.item} mb-4`} key={item.name}>
-                      <DragIcon type="primary" />
-                      <ConstructorElement
-                        isLocked={false}
-                        text={item.name}
-                        price={item.price}
-                        thumbnail={item.image}
-                      />
-                    </div>
-                )})
+            constructorIngredients.slice(1, -1).filter(item => item.type !== "bun").map((item) => (
+              <div className={`${styleBurgerConstructor.item} mb-4`} key={item.name}>
+                <DragIcon type="primary" />
+                <ConstructorElement
+                  isLocked={false}
+                  text={item.name}
+                  price={item.price}
+                  thumbnail={item.image}
+                />
+              </div>
+            ))
           }
         </div>
         <div className={`${styleBurgerConstructor.item} mb-4`}>
@@ -92,7 +94,6 @@ function BurgerConstructor(props: any) {
 };
 
 BurgerConstructor.propTypes = {
-  constructorElements: data.isRequired,
   openModal: PropTypes.func.isRequired
 };
 

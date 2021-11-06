@@ -11,36 +11,35 @@ import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 
-const URL_INGREDIENTS = 'https://norma.nomoreparties.space/api/ingredients';
+import { useDispatch } from 'react-redux';
+import { 
+  getIngredients,
+  SET_CURRENT_INGREDIENT,
+  DELETE_CURRENT_INGREDIENT
+} from '../../services/actions/ingredients';
 
 function App() {
+  const dispatch = useDispatch();
+
   const [isOpenOrder, setIsOpenOrder] = React.useState(false);
   const [isOpenIngredient, setIsOpenIngredient] = React.useState(false);
-  const [currentIngredient, setCurrentIngredient] = React.useState({});
-
-  const [state, setState] = useState({ 
-    productData: [],
+  const [statusLoading, setStatusLoading] = useState({ 
     isLoading: true,
     isError: false
   });
 
-  const getProductData = async () => {
-    setState({...state, isLoading: true});
-    try {
-      const res = await fetch(URL_INGREDIENTS);
-      const data = await res.json();
-      setState({ ...state, productData: data.data, isLoading: false });
-    } catch (error) {
-      setState({ ...state, isError: true, isLoading: false });
-    }
-  };
-
   useEffect(() => {
-    getProductData();
-  }, []);
+    setStatusLoading({ isLoading: true, isError: false });
+    try {
+      dispatch(getIngredients());
+      setStatusLoading({ isLoading: false, isError: false });
+    } catch (error) {
+      setStatusLoading({ isLoading: false, isError: true });
+    }
+  }, [dispatch]);
 
   const openIngredientModal = (item) => {
-    setCurrentIngredient({...item});
+    dispatch({type: SET_CURRENT_INGREDIENT, currentIngredient: item});
     setIsOpenIngredient(true);
   };
 
@@ -51,23 +50,24 @@ function App() {
   const closeModal = () => {
     setIsOpenIngredient(false);
     setIsOpenOrder(false);
+    dispatch({type: DELETE_CURRENT_INGREDIENT});
   };
 
   return (
     <div className={stylesApp.root}>
       <AppHeader />
-      {state.isLoading && !state.isError && <div className={`${stylesApp.loader} text_type_main-medium`}>Загрузка...</div>}
-      {state.isError && !state.isLoading && <div className={`${stylesApp.loader} text_type_main-medium`}>Упс! Что-то пошло не так =(</div>}
+      {statusLoading.isLoading && !statusLoading.isError && <div className={`${stylesApp.loader} text_type_main-medium`}>Загрузка...</div>}
+      {statusLoading.isError && !statusLoading.isLoading && <div className={`${stylesApp.loader} text_type_main-medium`}>Упс! Что-то пошло не так =(</div>}
       {
-        !state.isLoading && 
-        !state.isError &&
+        !statusLoading.isLoading && 
+        !statusLoading.isError &&
         <div className={stylesApp.container}> 
-          <BurgerIngredients ingredients={state.productData} openModal={openIngredientModal}/>
-          <BurgerConstructor constructorElements={state.productData} openModal={openOrderModal}/>
+          <BurgerIngredients openModal={openIngredientModal}/>
+          <BurgerConstructor openModal={openOrderModal}/>
           { isOpenIngredient && 
             (
                 <Modal onClick={closeModal} header="Детали ингредиента">
-                  <IngredientDetails currentIngredient={currentIngredient}/>
+                  <IngredientDetails />
                 </Modal>
             )
           }
