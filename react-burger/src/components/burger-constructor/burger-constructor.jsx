@@ -1,3 +1,4 @@
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 
@@ -9,10 +10,10 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styleBurgerConstructor from './burger-constructor.module.css';
-import { useSelector } from 'react-redux';
-
+import { getOrderNumber } from '../../services/actions/ingredients'
 
 function BurgerConstructor(props) {
+  const dispatch = useDispatch();
   const { 
     constructorIngredients,
     currentBun
@@ -85,7 +86,10 @@ function BurgerConstructor(props) {
           {totalPrice} 
           <CurrencyIcon type="primary" />
         </span>
-        <Button type="primary" size="large" onClick={() => props.openModal()}>
+        <Button type="primary" size="large" onClick={() => {
+          dispatch(getOrderNumber(constructorIngredients));
+          props.openModal()
+        }}>
           Оформить заказ
         </Button>
       </div>

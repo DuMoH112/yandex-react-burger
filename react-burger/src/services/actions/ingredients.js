@@ -2,6 +2,10 @@ export const GET_INGREDIENTS_REQUEST = "GET_INGREDIENTS_REQUEST";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
 export const GET_INGREDIENTS_FAILED = "GET_INGREDIENTS_FAILED";
 
+export const GET_ORDER_NUMBER_REQUEST = "GET_ORDER_NUMBER_REQUEST";
+export const GET_ORDER_NUMBER_SUCCESS = "GET_ORDER_NUMBER_SUCCESS";
+export const GET_ORDER_NUMBER_FAILED = "GET_ORDER_NUMBER_FAILED";
+
 export const SET_CURRENT_INGREDIENT = "SET_CURRENT_INGREDIENT";
 export const DELETE_CURRENT_INGREDIENT = "DELETE_CURRENT_INGREDIENT";
 
@@ -32,3 +36,39 @@ export function getIngredients() {
     });
   }
 }
+
+export function getOrderNumber(ingredients) {
+    const URL_API_ORDER = 'https://norma.nomoreparties.space/api/orders';
+  
+    return (dispatch) => {
+      dispatch({
+        type: GET_ORDER_NUMBER_REQUEST,
+      });
+  
+      const data = {
+        "ingredients": ingredients.map(item => item._id)
+      };
+  
+      fetch(  
+        URL_API_ORDER, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(data => {
+        dispatch({
+          type: GET_ORDER_NUMBER_SUCCESS,
+          orderNumber: data.order.number
+        })
+      })
+      .catch((error) => {
+        dispatch({
+          type: GET_ORDER_NUMBER_FAILED
+        })
+        console.error('Error:', error);
+      });
+    }
+  }

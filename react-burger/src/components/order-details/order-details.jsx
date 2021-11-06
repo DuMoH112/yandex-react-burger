@@ -3,12 +3,14 @@ import React from 'react';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import stylesDetails from './order-details.module.css';
+import { useSelector } from 'react-redux';
 
 
-function OrderDetails (props: any) {
+function OrderDetails (props) {
+    const orderNumber = useSelector(store => store.burgerIngredients.order.orderNumber);
     return (
         <div className={stylesDetails.root}>
-            <h4 className="text_type_digits-large mt-1 mb-4">034536</h4>
+            <h4 className="text_type_digits-large mt-1 mb-4">{orderNumber}</h4>
             <span className="text_type_main-default">идентификатор заказа</span>
             <div className="mb-8 mt-8">
                 <CheckMarkIcon type="secondary"/>
