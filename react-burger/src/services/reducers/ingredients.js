@@ -6,13 +6,17 @@ import {
     GET_ORDER_NUMBER_SUCCESS,
     GET_ORDER_NUMBER_FAILED,
     SET_CURRENT_INGREDIENT,
-    DELETE_CURRENT_INGREDIENT
+    DELETE_CURRENT_INGREDIENT,
+    ADD_INGREDIENT_TO_CONSTRUCTOR,
+    DELETE_INGREDIENT_FROM_CONSTRUCTOR,
+    ADD_BUN_TO_CONSTRUCTOR,
+    DELETE_BUN_FROM_CONSTRUCTOR
 } from '../actions/ingredients';
 
 const initialState = {
     ingredients: [],
     constructorIngredients: [],
-    currentBun: {},
+    currentBun: null,
     currentIngredient: {},
     order: {
         orderNumber: 0
@@ -50,6 +54,26 @@ export const getIngredientsReducer = (state = initialState, action) => {
         }
         case DELETE_CURRENT_INGREDIENT: {
             return { ...state, currentIngredient: {} }
+        }
+        case ADD_INGREDIENT_TO_CONSTRUCTOR: {
+            return {
+                ...state,
+                constructorIngredients: [...state.constructorIngredients, action.draggedIngredient]
+            }
+        }
+        case DELETE_INGREDIENT_FROM_CONSTRUCTOR: {
+            let itemToDeleteIndex = state.constructorIngredients.map(item => item._id).indexOf(action.id);
+
+            return {
+                ...state,
+                constructorIngredients: state.constructorIngredients.filter((item, index) => index !== itemToDeleteIndex)
+            }
+        }
+        case ADD_BUN_TO_CONSTRUCTOR: {
+            return { ...state, currentBun: action.draggedIngredient }
+        }
+        case DELETE_BUN_FROM_CONSTRUCTOR: {
+            return { ...state, currentBun: null }
         }
         default: {
             return state;

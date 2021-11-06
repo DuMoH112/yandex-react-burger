@@ -1,4 +1,7 @@
 import React, {useEffect, useState} from 'react';
+import { useDispatch } from 'react-redux';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -11,7 +14,6 @@ import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 
-import { useDispatch } from 'react-redux';
 import { 
   getIngredients,
   SET_CURRENT_INGREDIENT,
@@ -61,9 +63,11 @@ function App() {
       {
         !statusLoading.isLoading && 
         !statusLoading.isError &&
-        <div className={stylesApp.container}> 
-          <BurgerIngredients openModal={openIngredientModal}/>
-          <BurgerConstructor openModal={openOrderModal}/>
+        <div className={stylesApp.container}>
+          <DndProvider backend={HTML5Backend}> 
+            <BurgerIngredients openModal={openIngredientModal}/>
+            <BurgerConstructor openModal={openOrderModal}/>
+          </DndProvider>
           { isOpenIngredient && 
             (
                 <Modal onClick={closeModal} header="Детали ингредиента">

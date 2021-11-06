@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import BurgerIngredientsItems from '../burger-ingredients-item/burger-ingredients-item';
+import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
 import stylesBurgerIngredients from './burger-ingredients.module.css';
 import { useSelector } from 'react-redux';
 
@@ -44,10 +44,18 @@ function BurgerIngredients(props) {
           ))
         }
       </div>
-      <BurgerIngredientsItems
-        data={ingredients.filter((el) => el.type === current)}
-        openModal={props.openModal}
-      />
+      <ul className={`${stylesBurgerIngredients.card_container} pl-4 pr-2`}>
+        {
+          ingredients.filter((el) => el.type === current).map((item) => (
+            <BurgerIngredientsItem
+              key={item._id}
+              item={item}
+              openModal={props.openModal}
+            />
+          ))
+        }
+        
+      </ul>
     </section>
   );
 }
