@@ -14,6 +14,7 @@ export const DELETE_INGREDIENT_FROM_CONSTRUCTOR = 'DELETE_INGREDIENT_FROM_CONSTR
 export const ADD_BUN_TO_CONSTRUCTOR = 'ADD_BUN_TO_CONSTRUCTOR';
 export const DELETE_BUN_FROM_CONSTRUCTOR = 'DELETE_BUN_FROM_CONSTRUCTOR';
 
+export const REPLACE_INGREDIENTS = 'REPLACE_INGREDIENTS';
 
 
 export function getIngredients() {
@@ -25,44 +26,44 @@ export function getIngredients() {
     })
     fetch(URL_API).then(res => {
       if (res.ok) {
-          return res.json();
+        return res.json();
       }
       return Promise.reject(`Ошибка ${res.status}`);
     })
-    .then(data => 
+      .then(data =>
         dispatch({
-            type: GET_INGREDIENTS_SUCCESS,
-            data: data.data
-    }))
-    .catch(e => {
-      dispatch({
-        type: GET_INGREDIENTS_FAILED
+          type: GET_INGREDIENTS_SUCCESS,
+          data: data.data
+        }))
+      .catch(e => {
+        dispatch({
+          type: GET_INGREDIENTS_FAILED
+        });
+        console.log("Error: " + e.message);
       });
-      console.log("Error: " + e.message);
-    });
   }
 }
 
 export function getOrderNumber(ingredients) {
-    const URL_API_ORDER = 'https://norma.nomoreparties.space/api/orders';
-  
-    return (dispatch) => {
-      dispatch({
-        type: GET_ORDER_NUMBER_REQUEST,
-      });
-  
-      const data = {
-        "ingredients": ingredients.map(item => item._id)
-      };
-  
-      fetch(  
-        URL_API_ORDER, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
+  const URL_API_ORDER = 'https://norma.nomoreparties.space/api/orders';
+
+  return (dispatch) => {
+    dispatch({
+      type: GET_ORDER_NUMBER_REQUEST,
+    });
+
+    const data = {
+      "ingredients": ingredients.map(item => item._id)
+    };
+
+    fetch(
+      URL_API_ORDER, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
       .then(response => response.json())
       .then(data => {
         dispatch({
@@ -76,5 +77,17 @@ export function getOrderNumber(ingredients) {
         })
         console.error('Error:', error);
       });
-    }
   }
+}
+
+export const replaceItems = (dragIndex, hoverIndex) => {
+  return (dispatch) => {
+    dispatch({
+      type: REPLACE_INGREDIENTS,
+      payload: {
+        dragIndex: dragIndex,
+        hoverIndex: hoverIndex
+      }
+    })
+  }
+}

@@ -1,21 +1,21 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { useDrop } from 'react-dnd';
 
 import { 
   ConstructorElement, 
   CurrencyIcon,
-  DragIcon, 
   Button
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
+import BurgerConstructorItem from '../burger-constructor-item/burger-constructor-item';
 import styleBurgerConstructor from './burger-constructor.module.css';
 import { 
   getOrderNumber,
   ADD_INGREDIENT_TO_CONSTRUCTOR, 
   ADD_BUN_TO_CONSTRUCTOR
 } from '../../services/actions/ingredients'
-import { useDrop } from 'react-dnd';
 
 function BurgerConstructor(props) {
   const dispatch = useDispatch();
@@ -79,16 +79,9 @@ function BurgerConstructor(props) {
         <div className={`${styleBurgerConstructor.scrollable} mb-4`}>
         {
           constructorIngredients.map((item, index) => (
-            <div className={`${styleBurgerConstructor.item} mb-4`} key={item.name + index}>
-              <DragIcon type="primary" />
-              <ConstructorElement
-                isLocked={false}
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-              />
-            </div>
-          ))
+              <BurgerConstructorItem item={item} key={index} index={index}/>
+            )
+          )
         }
         </div>
         <div className={`${styleBurgerConstructor.item} mb-4`}>

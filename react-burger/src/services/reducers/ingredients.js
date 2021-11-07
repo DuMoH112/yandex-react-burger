@@ -10,7 +10,8 @@ import {
     ADD_INGREDIENT_TO_CONSTRUCTOR,
     DELETE_INGREDIENT_FROM_CONSTRUCTOR,
     ADD_BUN_TO_CONSTRUCTOR,
-    DELETE_BUN_FROM_CONSTRUCTOR
+    DELETE_BUN_FROM_CONSTRUCTOR,
+    REPLACE_INGREDIENTS
 } from '../actions/ingredients';
 
 const initialState = {
@@ -74,6 +75,17 @@ export const getIngredientsReducer = (state = initialState, action) => {
         }
         case DELETE_BUN_FROM_CONSTRUCTOR: {
             return { ...state, currentBun: null }
+        }
+        case REPLACE_INGREDIENTS: {
+            const replacedConstructorIngredients = [...state.constructorIngredients];
+            const draggedIngredient = replacedConstructorIngredients[action.payload.dragIndex];
+            replacedConstructorIngredients.splice(action.payload.dragIndex, 1);
+            replacedConstructorIngredients.splice(action.payload.hoverIndex, 0, draggedIngredient);
+
+            return {
+                ...state,
+                constructorIngredients: replacedConstructorIngredients
+            } 
         }
         default: {
             return state;
