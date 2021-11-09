@@ -94,8 +94,10 @@ function BurgerConstructor(props) {
           <CurrencyIcon type="primary" />
         </span>
         <Button type="primary" size="large" onClick={() => {
-          dispatch(getOrderNumber([currentBun, ...constructorIngredients, currentBun]));
-          props.openModal()
+          if (currentBun != null && constructorIngredients.length > 0) {
+            dispatch(getOrderNumber([currentBun, ...constructorIngredients, currentBun]));
+            props.openModal()
+          } 
         }}>
           Оформить заказ
         </Button>
