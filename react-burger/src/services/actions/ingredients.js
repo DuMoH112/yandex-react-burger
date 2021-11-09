@@ -1,4 +1,4 @@
-import URL_BACKEND from '../../../config/path'
+import { URL_BACKEND } from '../../config/path'
 
 export const GET_INGREDIENTS_REQUEST = "GET_INGREDIENTS_REQUEST";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
@@ -13,6 +13,7 @@ export const DELETE_CURRENT_INGREDIENT = "DELETE_CURRENT_INGREDIENT";
 
 export const ADD_INGREDIENT_TO_CONSTRUCTOR = 'ADD_INGREDIENT_TO_CONSTRUCTOR';
 export const DELETE_INGREDIENT_FROM_CONSTRUCTOR = 'DELETE_INGREDIENT_FROM_CONSTRUCTOR';
+export const CLEAR_CONSTRUCTOR = 'CLEAR_CONSTRUCTOR';
 export const ADD_BUN_TO_CONSTRUCTOR = 'ADD_BUN_TO_CONSTRUCTOR';
 export const DELETE_BUN_FROM_CONSTRUCTOR = 'DELETE_BUN_FROM_CONSTRUCTOR';
 
@@ -71,7 +72,9 @@ export function getOrderNumber(ingredients) {
         dispatch({
           type: GET_ORDER_NUMBER_SUCCESS,
           orderNumber: data.order.number
-        })
+        });
+        dispatch({type: CLEAR_CONSTRUCTOR});
+        dispatch({type: DELETE_BUN_FROM_CONSTRUCTOR});
       })
       .catch((error) => {
         dispatch({

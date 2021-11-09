@@ -9,6 +9,7 @@ import {
     DELETE_CURRENT_INGREDIENT,
     ADD_INGREDIENT_TO_CONSTRUCTOR,
     DELETE_INGREDIENT_FROM_CONSTRUCTOR,
+    CLEAR_CONSTRUCTOR,
     ADD_BUN_TO_CONSTRUCTOR,
     DELETE_BUN_FROM_CONSTRUCTOR,
     REPLACE_INGREDIENTS
@@ -60,6 +61,12 @@ export const getIngredientsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 constructorIngredients: [...state.constructorIngredients, action.draggedIngredient]
+            }
+        }
+        case CLEAR_CONSTRUCTOR: {
+            return {
+                ...state,
+                constructorIngredients: []
             }
         }
         case DELETE_INGREDIENT_FROM_CONSTRUCTOR: {

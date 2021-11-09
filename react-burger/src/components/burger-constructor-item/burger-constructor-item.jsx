@@ -52,7 +52,7 @@ function BurgerConstructorItem(props) {
     },
   });
 
-  const [{ isDragging }, drag] = useDrag({
+  const [, drag] = useDrag({
     type: "constructorIngredient",
     item: () => {
       return { id: props.item._id, index: props.index };
