@@ -64,11 +64,9 @@ function BurgerConstructorItem(props) {
 
   drag(drop(ref));
 
-  const opacity = isDragging ? 0 : 1;
   return (
     <div
       className={`${styles.item} mb-4`}
-      style={{ opacity }}
       ref={ref}
       draggable
     >
