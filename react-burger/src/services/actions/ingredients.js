@@ -1,3 +1,5 @@
+import URL_BACKEND from '../../../config/path'
+
 export const GET_INGREDIENTS_REQUEST = "GET_INGREDIENTS_REQUEST";
 export const GET_INGREDIENTS_SUCCESS = "GET_INGREDIENTS_SUCCESS";
 export const GET_INGREDIENTS_FAILED = "GET_INGREDIENTS_FAILED";
@@ -18,7 +20,7 @@ export const REPLACE_INGREDIENTS = 'REPLACE_INGREDIENTS';
 
 
 export function getIngredients() {
-  const URL_API = "https://norma.nomoreparties.space/api/ingredients";
+  const URL_API = `${URL_BACKEND}/ingredients`;
 
   return (dispatch) => {
     dispatch({
@@ -45,7 +47,7 @@ export function getIngredients() {
 }
 
 export function getOrderNumber(ingredients) {
-  const URL_API_ORDER = 'https://norma.nomoreparties.space/api/orders';
+  const URL_API_ORDER = `${URL_BACKEND}/orders`;
 
   return (dispatch) => {
     dispatch({
