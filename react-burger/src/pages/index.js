@@ -1,3 +1,5 @@
 import { HomePage } from "./home-page/home";
 
-export { HomePage };
+import { NotFound404 } from "./not-found/not-found";
+
+export { HomePage, NotFound404 };
