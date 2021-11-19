@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import BurgerIngredientsItems from '../burger-ingredients-item/burger-ingredients-item';
+import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
 import stylesBurgerIngredients from './burger-ingredients.module.css';
-import { data } from '../../utils/types'
+import { useSelector } from 'react-redux';
 
 
-function BurgerIngredients(props: any) {
+function BurgerIngredients(props) {
   const tabs = [
     {
       name: 'bun',
@@ -25,6 +25,7 @@ function BurgerIngredients(props: any) {
   ]
   
   const [current, setCurrent] = React.useState(tabs[0].name);
+  const ingredients = useSelector(store => store.burgerIngredients.ingredients);
 
   return (
     <section>
@@ -43,16 +44,23 @@ function BurgerIngredients(props: any) {
           ))
         }
       </div>
-      <BurgerIngredientsItems
-        data={props.ingredients.filter((el: any) => el.type === current)}
-        openModal={props.openModal}
-      />
+      <ul className={`${stylesBurgerIngredients.card_container}`}>
+        {
+          ingredients.filter((el) => el.type === current).map((item) => (
+            <BurgerIngredientsItem
+              key={item._id}
+              item={item}
+              openModal={props.openModal}
+            />
+          ))
+        }
+        
+      </ul>
     </section>
   );
 }
 
 BurgerIngredients.propTypes = {
-  ingredients: data.isRequired,
   openModal: PropTypes.func
 };
 

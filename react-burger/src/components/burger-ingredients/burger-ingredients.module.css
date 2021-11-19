@@ -1,3 +1,28 @@
-.selection_header{
-    margin-bottom: 40px;
+.selection_header {
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.card_container {
+  display: flex;
+  height: calc(100vh - 30vh);
+  list-style: none;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  align-content: flex-start;
+  justify-content: center;
+}
+
+.card_container::-webkit-scrollbar {
+  width: 14px;
+}
+.card_container::-webkit-scrollbar-track {
+  background: #19191c;
+}
+.card_container::-webkit-scrollbar-thumb {
+  background: #af5eaa;
+  border: 3px solid #19191c;
+  border-radius: 7px;
 }
