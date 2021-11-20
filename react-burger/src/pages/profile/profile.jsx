@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import styles from "./profile.module.css";
 
 import AppHeader from "../../components/app-header/app-header";
 import EditedInput from "../../components/edited-input/edited-inpit";
+import { loggingOut } from "../../services/actions/user";
 
 const validateEmail = function validateEmail(email) {
   var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -12,11 +14,19 @@ const validateEmail = function validateEmail(email) {
 };
 
 export function ProfilePage() {
+  const dispatch = useDispatch();
   const [form, setValue] = useState({ name: "", email: "", password: "" });
-  const [description, setDescription] = useState("В этом разделе вы можете изменить свои персональные данные")
+  const [description, setDescription] = useState(
+    "В этом разделе вы можете изменить свои персональные данные"
+  );
 
   const onChange = (e) => {
     setValue({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const onHandleLogout = (e) => {
+    e.preventDefault();
+    dispatch(loggingOut({ ...form }));
   };
 
   return (
@@ -24,31 +34,32 @@ export function ProfilePage() {
       <AppHeader />
       <div className={styles.container}>
         <div className={styles.container_navigate}>
-          <Link
-            to="/profile"
-            className={styles.button}
-          >
-            <span className={`${styles.button_text} ${styles.button_active} text text_type_main-medium`}>
+          <Link to="/profile" className={styles.button}>
+            <span
+              className={`${styles.button_text} ${styles.button_active} text text_type_main-medium`}
+            >
               Профиль
             </span>
           </Link>
-          <Link
-            to="/profile/orders"
-            className={styles.button}
-          >
-            <span className={`${styles.button_text} text text_type_main-medium`}>
+          <Link to="/profile/orders" className={styles.button}>
+            <span
+              className={`${styles.button_text} text text_type_main-medium`}
+            >
               История заказов
             </span>
           </Link>
-          <Link
-            to="/logout"
-            className={styles.button}
-          >
-            <span className={`${styles.button_text} text text_type_main-medium`}>
+          <Link to="/logout" className={styles.button} onClick={onHandleLogout}>
+            <span
+              className={`${styles.button_text} text text_type_main-medium`}
+            >
               Выход
             </span>
           </Link>
-          <span className={`${styles.description} text text_type_main-small text_color_inactive`}>{description}</span>
+          <span
+            className={`${styles.description} text text_type_main-small text_color_inactive`}
+          >
+            {description}
+          </span>
         </div>
         <form className={styles.form}>
           <EditedInput

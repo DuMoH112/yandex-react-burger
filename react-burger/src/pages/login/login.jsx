@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./login.module.css";
 import {
@@ -8,12 +9,23 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import AppHeader from "../../components/app-header/app-header";
+import { loginning } from "../../services/actions/user";
 
 export function LoginPage() {
-  const [form, setValue] = useState({ email: "", password: "" });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuth } = useSelector((store) => store.user);
+  const [form, setForm] = useState({ email: "", password: "" });
+
+  if (isAuth) navigate("/");
 
   const onChange = (e) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const onHandleForm = (e) => {
+    e.preventDefault();
+    dispatch(loginning({ ...form }));
   };
 
   return (
@@ -23,7 +35,11 @@ export function LoginPage() {
         <h1 className={`${styles.title} text text_type_main-medium mb-6`}>
           Вход
         </h1>
-        <form className={styles.form}>
+        <form
+          id="login-form"
+          className={styles.form}
+          onSubmit={onHandleForm}
+        >
           <Input
             type="email"
             name="email"

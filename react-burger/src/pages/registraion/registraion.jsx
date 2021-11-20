@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./registraion.module.css";
 import {
@@ -8,12 +9,24 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import AppHeader from "../../components/app-header/app-header";
+import { register } from "../../services/actions/user";
 
 export function RegistrationPage() {
-  const [form, setValue] = useState({ name: "", email: "", password: "" });
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const { isAuth } = useSelector( store => store.user );
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
+
+  if (isAuth)
+    navigate("/")
 
   const onChange = (e) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const onHandleForm = e => {
+    e.preventDefault();
+    dispatch(register({ ...form }));
   };
 
   return (
@@ -21,7 +34,11 @@ export function RegistrationPage() {
       <AppHeader />
       <div className={styles.container}>
         <h1 className="text text_type_main-medium mb-6">Регистрация</h1>
-        <form className={styles.form}>
+        <form
+          id="registration-form"
+          className={styles.form}
+          onSubmit={onHandleForm}
+        >
           <Input
             name={"name"}
             placeholder={"Имя"}
