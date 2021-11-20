@@ -19,14 +19,14 @@ function AppHeader() {
           <BurgerIcon type="primary" />
           <span className={`${headerStyles.button_text} ${headerStyles.button_active} text_type_main-default`}>Конструктор</span>
         </a>
-        <a href="/" className={`${headerStyles.button} ${classLink}`}>
+        <a href="/orders" className={`${headerStyles.button} ${classLink}`}>
           <ListIcon type="secondary" />
           <span className={`${headerStyles.button_text} text_type_main-default`}>Лента заказов</span>
         </a>
         <a href="/" className={headerStyles.logo}>
           <Logo />
         </a>
-        <a href="/" className={`${headerStyles.button} ${classLink}`}>
+        <a href="/profile" className={`${headerStyles.button} ${classLink}`}>
           <ProfileIcon type="secondary" />
           <span className={`${headerStyles.button_text} text_type_main-default`}>Личный кабинет</span>
         </a>

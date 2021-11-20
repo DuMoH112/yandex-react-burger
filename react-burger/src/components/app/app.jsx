@@ -6,8 +6,10 @@ import {
   LoginPage,
   RegistrationPage,
   FrogotPasswordPage,
-  ResetPasswordPage
+  ResetPasswordPage,
+  ProfilePage
 } from "../../pages";
+import RequireAuth from "../require-auth";
 
 import styles from "./app.module.css";
 
@@ -20,6 +22,9 @@ export default function App() {
         <Route path="/register" exact={true} element={<RegistrationPage />} />
         <Route path="/forgot-password" exact={true} element={<FrogotPasswordPage />} />
         <Route path="/reset-password" exact={true} element={<ResetPasswordPage />} />
+        <Route element={<RequireAuth />}> 
+          <Route path="/profile" exact={true} element={<ProfilePage />} />
+        </Route>
         <Route path="*" exact={true} element={<NotFound404 />} />
       </Routes>
     </BrowserRouter>
