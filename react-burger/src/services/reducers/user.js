@@ -1,14 +1,19 @@
 import {
     IS_REQUESTING,
     IS_FAILED,
-    IS_SUCCESSFUL
+    IS_SUCCESSFUL,
+    SET_USER_DATA
 } from '../actions/user';
 import { getCookie } from '../cookies';
 
 const initialState = {
     isRequesting: false,
     isFailed: false,
-    isAuth: Boolean(getCookie('accessToken'))
+    isAuth: Boolean(getCookie('accessToken')),
+    userData: {
+        email: "",
+        name: ""
+    }
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -32,6 +37,13 @@ export const userReducer = (state = initialState, action) => {
                 ...state,
                 isRequesting: false,
                 isAuth: action.isAuth
+            }
+        }
+        case SET_USER_DATA: {
+            return {
+                ...state,
+                isRequesting: false,
+                userData: action.userData
             }
         }
         default: {

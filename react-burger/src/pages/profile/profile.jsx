@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./profile.module.css";
 
 import AppHeader from "../../components/app-header/app-header";
 import EditedInput from "../../components/edited-input/edited-inpit";
-import { loggingOut } from "../../services/actions/user";
+import { getUserData, loggingOut } from "../../services/actions/user";
 
 const validateEmail = function validateEmail(email) {
   var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,18 +15,30 @@ const validateEmail = function validateEmail(email) {
 
 export function ProfilePage() {
   const dispatch = useDispatch();
-  const [form, setValue] = useState({ name: "", email: "", password: "" });
-  const [description, setDescription] = useState(
+  const navigate = useNavigate();
+  const { userData } = useSelector((store) => store.user);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [description] = useState(
     "В этом разделе вы можете изменить свои персональные данные"
   );
 
+  useEffect(() => {
+    dispatch(getUserData());
+    setForm({ name: userData.name, email: userData.email, password: "" });
+  }, [dispatch, userData.name, userData.email]);
+
   const onChange = (e) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const onHandleLogout = (e) => {
     e.preventDefault();
-    dispatch(loggingOut({ ...form }));
+    dispatch(loggingOut());
+    navigate("/login");
   };
 
   return (

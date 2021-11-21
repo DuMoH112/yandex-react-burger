@@ -8,6 +8,8 @@ export const IS_REQUESTING = 'IS_REQUESTING';
 export const IS_FAILED = 'IS_FAILED';
 export const IS_SUCCESSFUL = 'IS_SUCCESSFUL';
 
+export const SET_USER_DATA = 'SET_USER_DATA';
+
 export function register({ email, password, name }) {
     return function (dispatch) {
         dispatch({ type: IS_REQUESTING });
@@ -30,7 +32,7 @@ export function register({ email, password, name }) {
             })
             .then(res => {
                 if (res.success) {
-                    dispatch(({ type: IS_SUCCESSFUL, isAuth: true }));
+                    dispatch({ type: IS_SUCCESSFUL, isAuth: true });
                     setCookie('accessToken', res.accessToken, { expires: 20 * 60 });
                     setCookie('refreshToken', res.refreshToken);
                 } else {
@@ -64,7 +66,7 @@ export function loginning({ email, password }) {
             })
             .then(res => {
                 if (res.success) {
-                    dispatch(({ type: IS_SUCCESSFUL, isAuth: true }));
+                    dispatch({ type: IS_SUCCESSFUL, isAuth: true });
                     setCookie('accessToken', res.accessToken, { expires: 20 * 60 });
                     setCookie('refreshToken', res.refreshToken);
                 } else {
@@ -100,6 +102,35 @@ export function loggingOut() {
                     dispatch(({ type: IS_SUCCESSFUL, isAuth: false }));
                     deleteCookie('accessToken');
                     deleteCookie('refreshToken');
+                } else {
+                    dispatch({ type: IS_FAILED });
+                }
+            })
+            .catch(err => {
+                dispatch({ type: IS_FAILED });
+            });
+    }
+}
+
+export function getUserData() {
+    return function (dispatch) {
+        dispatch({ type: IS_REQUESTING });
+        fetch('https://norma.nomoreparties.space/api/auth/user', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `${getCookie('accessToken')}`
+            }
+        })
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(`Ошибка ${res.status}`);
+            })
+            .then(res => {
+                if (res.success) {
+                    dispatch({ type: SET_USER_DATA, userData: res.user })
                 } else {
                     dispatch({ type: IS_FAILED });
                 }
