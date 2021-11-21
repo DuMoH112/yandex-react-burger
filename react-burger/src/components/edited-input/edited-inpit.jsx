@@ -65,7 +65,7 @@ function EditedInput(_ref) {
 }
 
 EditedInput.propTypes = {
-  _ref: editedInput.isRequired,
+  _ref: editedInput,
 };
 
 export default EditedInput;
