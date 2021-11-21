@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -17,7 +17,9 @@ export function LoginPage() {
   const { isAuth } = useSelector((store) => store.user);
   const [form, setForm] = useState({ email: "", password: "" });
 
-  if (isAuth) navigate("/");
+  useEffect(() => {
+    if (isAuth) navigate("/");
+  }, [isAuth, navigate]);
 
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -35,11 +37,7 @@ export function LoginPage() {
         <h1 className={`${styles.title} text text_type_main-medium mb-6`}>
           Вход
         </h1>
-        <form
-          id="login-form"
-          className={styles.form}
-          onSubmit={onHandleForm}
-        >
+        <form id="login-form" className={styles.form} onSubmit={onHandleForm}>
           <Input
             type="email"
             name="email"

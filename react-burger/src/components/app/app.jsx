@@ -11,8 +11,6 @@ import {
 } from "../../pages";
 import RequireAuth from "../require-auth";
 
-import styles from "./app.module.css";
-
 export default function App() {
   return (
     <BrowserRouter>
