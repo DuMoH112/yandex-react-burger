@@ -6,5 +6,6 @@ import { ResetPasswordPage } from "./reset-password/reset-password";
 import { ProfilePage } from "./profile/profile";
 
 import { NotFound404 } from "./not-found/not-found";
+import { PlugPage } from "./plug-page/plug-page";
 
-export { HomePage, NotFound404, LoginPage, RegistrationPage, FrogotPasswordPage, ResetPasswordPage, ProfilePage };
+export { HomePage, LoginPage, RegistrationPage, FrogotPasswordPage, ResetPasswordPage, ProfilePage, NotFound404, PlugPage };
