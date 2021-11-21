@@ -112,6 +112,69 @@ export function loggingOut() {
     }
 }
 
+export function forgotPassword({ email }) {
+    return function (dispatch) {
+        dispatch({ type: IS_REQUESTING });
+        fetch('https://norma.nomoreparties.space/api/password-reset', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email
+            })
+        })
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(`Ошибка ${res.status}`);
+            })
+            .then(res => {
+                if (res.success) {
+                    dispatch();
+                } else {
+                    dispatch({ type: IS_FAILED });
+                }
+            })
+            .catch(err => {
+                dispatch({ type: IS_FAILED });
+            });
+    }
+}
+
+export function resetPassword({ password, token }) {
+    return function (dispatch) {
+        dispatch({ type: IS_REQUESTING });
+        fetch('https://norma.nomoreparties.space/api/password-reset/reset', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                password,
+                token
+            })
+        })
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(`Ошибка ${res.status}`);
+            })
+            .then(res => {
+                if (res.success) {
+                    dispatch();
+                } else {
+                    dispatch({ type: IS_FAILED });
+                }
+            })
+            .catch(err => {
+                dispatch({ type: IS_FAILED });
+            });
+    }
+}
+
 export function getUserData() {
     return function (dispatch) {
         dispatch({ type: IS_REQUESTING });
