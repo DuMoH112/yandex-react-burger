@@ -25,6 +25,15 @@
   width: 100%;
 }
 
+.buttonsContainer {
+  display: flex;
+}
+
+.buttonsContainer button{
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .container_navigate {
   width: 320px;
 }

@@ -140,3 +140,39 @@ export function getUserData() {
             });
     }
 }
+
+export function patchUserData({ name, email, password }) {
+    return function (dispatch) {
+        let updatedData = {};
+        let data = { name, email, password };
+        for (let el in data) {
+            if (data[el] !== "") updatedData[el] = data[el]
+        }
+
+        dispatch({ type: IS_REQUESTING });
+        fetch('https://norma.nomoreparties.space/api/auth/user', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `${getCookie('accessToken')}`
+            },
+            body: JSON.stringify({ ...updatedData })
+        })
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(`Ошибка ${res.status}`);
+            })
+            .then(res => {
+                if (res.success) {
+                    dispatch({ type: SET_USER_DATA, userData: res.user })
+                } else {
+                    dispatch({ type: IS_FAILED });
+                }
+            })
+            .catch(err => {
+                dispatch({ type: IS_FAILED });
+            });
+    }
+}

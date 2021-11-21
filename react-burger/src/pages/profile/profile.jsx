@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./profile.module.css";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import AppHeader from "../../components/app-header/app-header";
 import EditedInput from "../../components/edited-input/edited-inpit";
-import { getUserData, loggingOut } from "../../services/actions/user";
+import { getUserData, loggingOut, patchUserData } from "../../services/actions/user";
 
 const validateEmail = function validateEmail(email) {
   var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -22,6 +23,13 @@ export function ProfilePage() {
     email: "",
     password: "",
   });
+  const [isUpdateUserData, setIsUpdateUserData] = useState(false);
+  const [updateForm, setUpdateForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
   const [description] = useState(
     "В этом разделе вы можете изменить свои персональные данные"
   );
@@ -32,7 +40,8 @@ export function ProfilePage() {
   }, [dispatch, userData.name, userData.email]);
 
   const onChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setIsUpdateUserData(true);
+    setUpdateForm({ ...updateForm, [e.target.name]: e.target.value });
   };
 
   const onHandleLogout = (e) => {
@@ -40,6 +49,20 @@ export function ProfilePage() {
     dispatch(loggingOut());
     navigate("/login");
   };
+
+  const onHandleCacelButton = useCallback(() => {
+    setUpdateForm({
+      name: "",
+      email: "",
+      password: "",
+    });
+    setIsUpdateUserData(false);
+  }, []);
+
+  const onHandleSaveButton = useCallback(() => {
+    dispatch(patchUserData({ ...updateForm }));
+    setIsUpdateUserData(false);
+  }, [dispatch, updateForm]);
 
   return (
     <>
@@ -77,14 +100,14 @@ export function ProfilePage() {
           <EditedInput
             name={"name"}
             placeholder={"Имя"}
-            value={form.name}
+            value={updateForm.name === "" ? form.name : updateForm.name}
             onChange={onChange}
           />
           <EditedInput
             type="email"
             name="email"
             placeholder={"E-mail"}
-            value={form.email}
+            value={updateForm.email === "" ? form.email : updateForm.email}
             onChange={onChange}
             validateFunction={validateEmail}
           />
@@ -92,9 +115,15 @@ export function ProfilePage() {
             type="password"
             name="password"
             placeholder={"Пароль"}
-            value={form.password}
+            value={
+              updateForm.password === "" ? form.password : updateForm.password
+            }
             onChange={onChange}
           />
+          { isUpdateUserData && <div className={styles.buttonsContainer}>
+            <Button size="medium" onClick={onHandleCacelButton}>Отмена</Button>
+            <Button size="medium" onClick={onHandleSaveButton}>Сохранить</Button>
+          </div>}
         </form>
       </div>
     </>
