@@ -112,6 +112,43 @@ export function loggingOut() {
     }
 }
 
+export function refreshToken() {
+    return getCookie('refreshToken') && getCookie('accessToken')
+        ? function (dispatch) {
+            dispatch({ type: IS_SUCCESSFUL, isAuth: true });
+        }
+        : function (dispatch) {
+            dispatch({ type: IS_REQUESTING });
+            fetch('https://norma.nomoreparties.space/api/auth/token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    token: getCookie('refreshToken')
+                })
+            })
+                .then(res => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    return Promise.reject(`Ошибка ${res.status}`);
+                })
+                .then(res => {
+                    if (res.success) {
+                        dispatch({ type: IS_SUCCESSFUL, isAuth: true });
+                        setCookie('accessToken', res.accessToken, { expires: 20 * 60 });
+                        setCookie('refreshToken', res.refreshToken);
+                    } else {
+                        dispatch({ type: IS_FAILED });
+                    }
+                })
+                .catch(err => {
+                    dispatch({ type: IS_FAILED });
+                })
+        }
+}
+
 export function forgotPassword({ email }) {
     return function (dispatch) {
         dispatch({ type: IS_REQUESTING });
