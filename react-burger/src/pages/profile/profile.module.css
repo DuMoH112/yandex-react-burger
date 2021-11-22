@@ -2,7 +2,6 @@
   display: grid;
   align-items: flex-start;
   grid-template-columns: 380px 480px;
-  padding-top: 100px;
   margin-left: auto;
   margin-right: auto;
   margin: 15vh auto auto auto;

@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./profile.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import AppHeader from "../../components/app-header/app-header";
 import EditedInput from "../../components/edited-input/edited-inpit";
 import { getUserData, loggingOut, patchUserData } from "../../services/actions/user";
 
@@ -66,7 +65,6 @@ export function ProfilePage() {
 
   return (
     <>
-      <AppHeader />
       <div className={styles.container}>
         <div className={styles.container_navigate}>
           <Link to="/profile" className={styles.button}>

@@ -3,6 +3,7 @@ import {
     setCookie,
     deleteCookie
 } from '../cookies';
+import { URL_BACKEND } from '../../config/path'
 
 export const IS_REQUESTING = 'IS_REQUESTING';
 export const IS_FAILED = 'IS_FAILED';
@@ -13,7 +14,7 @@ export const SET_USER_DATA = 'SET_USER_DATA';
 export function register({ email, password, name }) {
     return function (dispatch) {
         dispatch({ type: IS_REQUESTING });
-        fetch('https://norma.nomoreparties.space/api/auth/register', {
+        fetch(`${URL_BACKEND}/auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -48,7 +49,7 @@ export function register({ email, password, name }) {
 export function loginning({ email, password }) {
     return function (dispatch) {
         dispatch({ type: IS_REQUESTING });
-        fetch('https://norma.nomoreparties.space/api/auth/login', {
+        fetch(`${URL_BACKEND}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -82,7 +83,7 @@ export function loginning({ email, password }) {
 export function loggingOut() {
     return function (dispatch) {
         dispatch({ type: IS_REQUESTING });
-        fetch('https://norma.nomoreparties.space/api/auth/logout', {
+        fetch(`${URL_BACKEND}/auth/logout`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -119,7 +120,7 @@ export function refreshToken() {
         }
         : function (dispatch) {
             dispatch({ type: IS_REQUESTING });
-            fetch('https://norma.nomoreparties.space/api/auth/token', {
+            fetch(`${URL_BACKEND}/auth/token`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -152,7 +153,7 @@ export function refreshToken() {
 export function forgotPassword({ email }) {
     return function (dispatch) {
         dispatch({ type: IS_REQUESTING });
-        fetch('https://norma.nomoreparties.space/api/password-reset', {
+        fetch(`${URL_BACKEND}/password-reset`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -183,7 +184,7 @@ export function forgotPassword({ email }) {
 export function resetPassword({ password, token }) {
     return function (dispatch) {
         dispatch({ type: IS_REQUESTING });
-        fetch('https://norma.nomoreparties.space/api/password-reset/reset', {
+        fetch(`${URL_BACKEND}/password-reset/reset`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -215,7 +216,7 @@ export function resetPassword({ password, token }) {
 export function getUserData() {
     return function (dispatch) {
         dispatch({ type: IS_REQUESTING });
-        fetch('https://norma.nomoreparties.space/api/auth/user', {
+        fetch(`${URL_BACKEND}/auth/user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -250,7 +251,7 @@ export function patchUserData({ name, email, password }) {
         }
 
         dispatch({ type: IS_REQUESTING });
-        fetch('https://norma.nomoreparties.space/api/auth/user', {
+        fetch(`${URL_BACKEND}/auth/user`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
