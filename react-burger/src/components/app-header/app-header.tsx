@@ -1,34 +1,64 @@
-import React from 'react';
+import React, { useMemo } from "react";
+import { useLocation } from "react-router-dom";
 
-import { 
-  Logo, 
+import {
+  Logo,
   ListIcon,
   BurgerIcon,
-  ProfileIcon 
-} from '@ya.praktikum/react-developer-burger-ui-components'
+  ProfileIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import headerStyles from './app-header.module.css';
-
+import styles from "./app-header.module.css";
 
 function AppHeader() {
-  const classLink = "pt-4 pr-5 pb-4 pl-5 mr-2"
+  const location = useLocation();
+  const classNames = useMemo(() => {
+    return {
+      home:
+        "/" === location.pathname ||
+        "ingredients" === location.pathname.split("/")[1]
+          ? styles.button_active
+          : "",
+      orders:
+        "orders" === location.pathname.split("/")[1]
+          ? styles.button_active
+          : "",
+      profile:
+        "profile" === location.pathname.split("/")[1]
+          ? styles.button_active
+          : "",
+    };
+  }, [location.pathname]);
+  const classLink = "pt-4 pr-5 pb-4 pl-5 mr-2";
   return (
-    <header className={`${headerStyles.header}`}>
-      <nav className={headerStyles.nav}>
-        <a href="/" className={`${headerStyles.button} ${classLink}`}>
+    <header className={`${styles.header}`}>
+      <nav className={styles.nav}>
+        <a href="/" className={`${styles.button} ${classLink}`}>
           <BurgerIcon type="primary" />
-          <span className={`${headerStyles.button_text} ${headerStyles.button_active} text_type_main-default`}>Конструктор</span>
+          <span
+            className={`${styles.button_text} ${classNames.home} text_type_main-default`}
+          >
+            Конструктор
+          </span>
         </a>
-        <a href="/orders" className={`${headerStyles.button} ${classLink}`}>
+        <a href="/orders" className={`${styles.button} ${classLink}`}>
           <ListIcon type="secondary" />
-          <span className={`${headerStyles.button_text} text_type_main-default`}>Лента заказов</span>
+          <span
+            className={`${styles.button_text} ${classNames.orders} text_type_main-default`}
+          >
+            Лента заказов
+          </span>
         </a>
-        <a href="/" className={headerStyles.logo}>
+        <a href="/" className={styles.logo}>
           <Logo />
         </a>
-        <a href="/profile" className={`${headerStyles.button} ${classLink}`}>
+        <a href="/profile" className={`${styles.button} ${classLink}`}>
           <ProfileIcon type="secondary" />
-          <span className={`${headerStyles.button_text} text_type_main-default`}>Личный кабинет</span>
+          <span
+            className={`${styles.button_text} ${classNames.profile} text_type_main-default`}
+          >
+            Личный кабинет
+          </span>
         </a>
       </nav>
     </header>
