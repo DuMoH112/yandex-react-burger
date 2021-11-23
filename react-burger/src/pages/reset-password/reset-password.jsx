@@ -7,7 +7,7 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import AppHeader from "../../components/app-header/app-header";
+
 import { resetPassword } from "../../services/actions/user";
 
 export function ResetPasswordPage() {
@@ -37,7 +37,6 @@ export function ResetPasswordPage() {
 
   return (
     <>
-      <AppHeader />
       <div className={styles.container}>
         <h1 className={`${styles.title} text text_type_main-medium mb-6`}>
           Восстановление пароля

@@ -7,7 +7,7 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import AppHeader from "../../components/app-header/app-header";
+
 import { forgotPassword } from "../../services/actions/user";
 
 export function FrogotPasswordPage() {
@@ -32,7 +32,6 @@ export function FrogotPasswordPage() {
 
   return (
     <>
-      <AppHeader />
       <div className={styles.container}>
         <h1 className={`${styles.title} text text_type_main-medium mb-6`}>
           Восстановление пароля
