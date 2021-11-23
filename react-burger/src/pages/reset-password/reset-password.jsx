@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import styles from "./reset-password.module.css";
 import {
@@ -10,16 +10,18 @@ import {
 
 import { resetPassword } from "../../services/actions/user";
 
-export function ResetPasswordPage() {
+export function ResetPasswordPage(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { isAuth } = useSelector((store) => store.user);
   const [form, setValue] = useState({ password: "", token: "" });
-  const [isVisiblePassword, setIsVisiblePassword] = useState(false)
+  const [isVisiblePassword, setIsVisiblePassword] = useState(false);
 
   useEffect(() => {
     if (isAuth) navigate("/");
-  }, [isAuth, navigate]);
+    if (!location.state) navigate("/login");
+  }, [isAuth, location.state, navigate]);
 
   const onChange = (e) => {
     setValue({ ...form, [e.target.name]: e.target.value });
@@ -32,7 +34,7 @@ export function ResetPasswordPage() {
   };
 
   const onHandleVisiblePassword = () => {
-    setIsVisiblePassword(!isVisiblePassword)
+    setIsVisiblePassword(!isVisiblePassword);
   };
 
   return (

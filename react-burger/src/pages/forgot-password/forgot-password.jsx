@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -27,7 +27,7 @@ export function FrogotPasswordPage() {
   const onHandleForm = (e) => {
     e.preventDefault();
     dispatch(forgotPassword({ ...form }));
-    navigate("/reset-password");
+    navigate("/reset-password", { state: true });
   };
 
   return (
