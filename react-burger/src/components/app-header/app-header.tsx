@@ -1,4 +1,5 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
+import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 import {
@@ -33,33 +34,33 @@ function AppHeader() {
   return (
     <header className={`${styles.header}`}>
       <nav className={styles.nav}>
-        <a href="/" className={`${styles.button} ${classLink}`}>
+        <Link to="/" className={`${styles.button} ${classLink}`}>
           <BurgerIcon type="primary" />
           <span
             className={`${styles.button_text} ${classNames.home} text_type_main-default`}
           >
             Конструктор
           </span>
-        </a>
-        <a href="/orders" className={`${styles.button} ${classLink}`}>
+        </Link>
+        <Link to="/orders" className={`${styles.button} ${classLink}`}>
           <ListIcon type="secondary" />
           <span
             className={`${styles.button_text} ${classNames.orders} text_type_main-default`}
           >
             Лента заказов
           </span>
-        </a>
-        <a href="/" className={styles.logo}>
+        </Link>
+        <Link to="/" className={styles.logo}>
           <Logo />
-        </a>
-        <a href="/profile" className={`${styles.button} ${classLink}`}>
+        </Link>
+        <Link to="/profile" className={`${styles.button} ${classLink}`}>
           <ProfileIcon type="secondary" />
           <span
             className={`${styles.button_text} ${classNames.profile} text_type_main-default`}
           >
             Личный кабинет
           </span>
-        </a>
+        </Link>
       </nav>
     </header>
   );
