@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
 
@@ -110,6 +110,7 @@ function BurgerConstructor() {
           onClick={() => {
             if (!isAuth) {
               navigate("/login");
+              return;
             }
 
             if (currentBun != null && constructorIngredients.length > 0) {
