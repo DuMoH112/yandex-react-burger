@@ -7,8 +7,7 @@ export function getCookie(name) {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function setCookie(name, value, props) {
-  props = props || {};
+export function setCookie(name, value, props={}) {
   let exp = props.expires;
   if (typeof exp == "number" && exp) {
     const d = new Date();
@@ -30,6 +29,6 @@ export function setCookie(name, value, props) {
   document.cookie = updatedCookie;
 }
 
-export function deleteCookie(name) {
-  setCookie(name, null, { expires: -1 });
+export function deleteCookie(name, props={}) {
+  setCookie(name, null, { ...props, expires: -1 });
 }

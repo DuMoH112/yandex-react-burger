@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 
@@ -34,11 +34,11 @@ function BurgerIngredients() {
     (store) => store.burgerIngredients.ingredients
   );
 
-  const openModal = (item) => {
+  const openModal = useCallback((item) => {
     dispatch(openIngredientModal());
     dispatch({ type: SET_CURRENT_INGREDIENT, currentIngredient: item });
     navigate(`/ingredients/${item._id}`);
-  };
+  }, [dispatch, navigate]);
 
   return (
     <section>

@@ -13,14 +13,6 @@ export function HomePage() {
     (store) => store.modal
   );
 
-  console.log({
-    condition:
-      isOpenModalIngredient || isOpenModalOrder || location.pathname === "/",
-    isOpenModalIngredient: isOpenModalIngredient,
-    isOpenModalOrder: isOpenModalOrder,
-    location: location.pathname,
-  });
-
   return (
     <>
       {(isOpenModalIngredient ||

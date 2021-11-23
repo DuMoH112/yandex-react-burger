@@ -1,4 +1,5 @@
 import {
+    deleteCookie,
     getCookie,
     setCookie
 } from '../cookies';
@@ -16,12 +17,12 @@ export function closeOrderModal() {
 }
 
 export function openIngredientModal() {
-    if (getCookie('isOpenIngredientModal') !== "true") setCookie('isOpenIngredientModal', true);
+    if (!getCookie('isOpenIngredientModal')) setCookie('isOpenIngredientModal', true);
     return (dispatch) => { dispatch({ type: IS_OPEN_INGREDIENT, isOpen: true }) };
 }
 
 export function closeIngredientModal() {
-    setCookie('isOpenIngredientModal', false);
+    deleteCookie('isOpenIngredientModal', { path: '/' });
     return (dispatch) => {
         dispatch({ type: IS_OPEN_INGREDIENT, isOpen: false });
     };

@@ -16,7 +16,7 @@ import {
   PlugPage,
 } from "../../pages";
 import { refreshToken } from "../../services/actions/user";
-import { getCookie, setCookie } from "../../services/cookies";
+import { getCookie } from "../../services/cookies";
 import RequireAuth from "../require-auth";
 
 import AppHeader from "../app-header/app-header";
@@ -45,15 +45,15 @@ export default function App() {
   );
 
   const isHaveCookie = getCookie("isOpenIngredientModal") === "true" ? true : false;
+  const isHaveRefreshToken = Boolean(getCookie("refreshToken"));
 
   useEffect(() => {
     dispatch(getIngredients());
-    if (getCookie("refreshToken")) dispatch(refreshToken());
-  }, [dispatch]);
+    if (isHaveRefreshToken) dispatch(refreshToken());
+  }, [dispatch, isHaveRefreshToken]);
 
   useEffect(() => {
     if (isHaveCookie) dispatch(openIngredientModal());
-    else setCookie("isOpenIngredientModal", false);
   }, [dispatch, isHaveCookie]);
 
   const closeModal = useCallback(() => {
