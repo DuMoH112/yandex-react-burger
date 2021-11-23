@@ -1,36 +1,58 @@
-import React from 'react';
+import stylesDetails from "./ingredient-details.module.css";
+import { useSelector } from "react-redux";
+import { useMemo } from "react";
 
-import stylesDetails from './ingredient-details.module.css';
-import { useSelector } from 'react-redux';
+function IngredientDetails() {
+  const { currentIngredient, ingredients } = useSelector(
+    (store) => store.burgerIngredients
+  );
+  const { isOpenModalIngredient } = useSelector((store) => store.modal);
 
+  let _id = window.location.pathname.split("/");
+  _id = _id[_id.length - 1];
 
-function IngredientDetails (props) {
-    const { currentIngredient } = useSelector(store => store.burgerIngredients);
-    
-    return (
-        <div className={stylesDetails.root}>
-            <img src={currentIngredient.image_large} alt="" />
-            <h4 className="text_type_main-medium mb-8 mt-4">{currentIngredient.name}</h4>
-            <div className={`${stylesDetails.info}`}>
-                <div className={`${stylesDetails.infoItem} mr-5`}>
-                    <span className="text_type_main-default mb-2">Калории,ккал</span>
-                    <span className="text_type_digits-default">{currentIngredient.calories}</span>
-                </div>
-                <div className={`${stylesDetails.infoItem} mr-5`}>
-                    <span className="text_type_main-default mb-2">Белки, г</span>
-                    <span className="text_type_digits-default">{currentIngredient.proteins}</span>
-                </div>
-                <div className={`${stylesDetails.infoItem} mr-5`}>
-                    <span className="text_type_main-default mb-2">Жиры, г</span>
-                    <span className="text_type_digits-default">{currentIngredient.fat}</span>
-                </div>
-                <div className={`${stylesDetails.infoItem}`}>
-                    <span className="text_type_main-default mb-2">Углеводы, г</span>
-                    <span className="text_type_digits-default">{currentIngredient.carbohydrates}</span>
-                </div>
-            </div>
+  const ingredient = useMemo(() => {
+    return JSON.stringify(currentIngredient) !== "{}"
+      ? currentIngredient
+      : ingredients.find((item) => item._id === _id);
+  }, [currentIngredient, ingredients, _id]);
+
+  const className = isOpenModalIngredient
+    ? stylesDetails.root_modal
+    : stylesDetails.root_page;
+
+  return ingredient ? (
+    <div className={className}>
+      <img src={ingredient.image_large} alt="" />
+      <h4 className="text_type_main-medium mb-8 mt-4">{ingredient.name}</h4>
+      <div className={`${stylesDetails.info}`}>
+        <div className={`${stylesDetails.infoItem} mr-5`}>
+          <span className="text_type_main-default mb-2">Калории,ккал</span>
+          <span className="text_type_digits-default">
+            {ingredient.calories}
+          </span>
         </div>
-    );
-};
+        <div className={`${stylesDetails.infoItem} mr-5`}>
+          <span className="text_type_main-default mb-2">Белки, г</span>
+          <span className="text_type_digits-default">
+            {ingredient.proteins}
+          </span>
+        </div>
+        <div className={`${stylesDetails.infoItem} mr-5`}>
+          <span className="text_type_main-default mb-2">Жиры, г</span>
+          <span className="text_type_digits-default">{ingredient.fat}</span>
+        </div>
+        <div className={`${stylesDetails.infoItem}`}>
+          <span className="text_type_main-default mb-2">Углеводы, г</span>
+          <span className="text_type_digits-default">
+            {ingredient.carbohydrates}
+          </span>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <></>
+  );
+}
 
 export default IngredientDetails;

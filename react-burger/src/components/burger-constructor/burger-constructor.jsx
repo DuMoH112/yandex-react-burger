@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useMemo } from "react";
-import PropTypes from "prop-types";
 import { useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
 
@@ -17,8 +16,9 @@ import {
   ADD_INGREDIENT_TO_CONSTRUCTOR,
   ADD_BUN_TO_CONSTRUCTOR,
 } from "../../services/actions/ingredients";
+import { openOrderModal } from "../../services/actions/modal";
 
-function BurgerConstructor(props) {
+function BurgerConstructor() {
   const dispatch = useDispatch();
   const { constructorIngredients, currentBun } = useSelector(
     (store) => store.burgerIngredients
@@ -78,6 +78,10 @@ function BurgerConstructor(props) {
     );
   }, [currentBun]);
 
+  const openModal = () => {
+    dispatch(openOrderModal());
+  };
+
   return (
     <section className={styleBurgerConstructor.root}>
       <div ref={dropTarget} className={`${styleBurgerConstructor.list} `}>
@@ -116,7 +120,7 @@ function BurgerConstructor(props) {
                   currentBun,
                 ])
               );
-              props.openModal();
+              openModal();
             }
           }}
         >
@@ -126,9 +130,5 @@ function BurgerConstructor(props) {
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  openModal: PropTypes.func.isRequired,
-};
 
 export default BurgerConstructor;

@@ -9,13 +9,12 @@
 .container {
   display: grid;
   align-items: flex-start;
-  grid-template-columns: 630px 630px;
   padding-top: 100px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .loader {
-  margin: 150px auto;
+  margin: 250px auto;
   text-shadow: 0 0 10px #af5eaa;
 }
