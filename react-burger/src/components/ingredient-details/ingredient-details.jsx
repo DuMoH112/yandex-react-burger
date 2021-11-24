@@ -1,21 +1,21 @@
-import stylesDetails from "./ingredient-details.module.css";
-import { useSelector } from "react-redux";
 import { useMemo } from "react";
+import { useParams } from "react-router";
+import { useSelector } from "react-redux";
+
+import stylesDetails from "./ingredient-details.module.css";
 
 function IngredientDetails() {
   const { currentIngredient, ingredients } = useSelector(
     (store) => store.burgerIngredients
   );
   const { isOpenModalIngredient } = useSelector((store) => store.modal);
-
-  let _id = window.location.pathname.split("/");
-  _id = _id[_id.length - 1];
+  const { id } = useParams();
 
   const ingredient = useMemo(() => {
     return JSON.stringify(currentIngredient) !== "{}"
       ? currentIngredient
-      : ingredients.find((item) => item._id === _id);
-  }, [currentIngredient, ingredients, _id]);
+      : ingredients.find((item) => item._id === id);
+  }, [currentIngredient, ingredients, id]);
 
   const className = isOpenModalIngredient
     ? stylesDetails.root_modal
