@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
 import styles from "./app.module.css";
 import "@ya.praktikum/react-developer-burger-ui-components";
@@ -37,6 +37,7 @@ import {
 export default function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const { isOpenModalOrder, isOpenModalIngredient } = useSelector(
     (store) => store.modal
   );
@@ -44,7 +45,8 @@ export default function App() {
     (store) => store.burgerIngredients
   );
 
-  const isHaveCookie = getCookie("isOpenIngredientModal") === "true" ? true : false;
+  const isHaveCookie =
+    getCookie("isOpenIngredientModal") === "true" ? true : false;
   const isHaveRefreshToken = Boolean(getCookie("refreshToken"));
 
   useEffect(() => {
@@ -60,9 +62,10 @@ export default function App() {
     dispatch(closeOrderModal());
     dispatch(closeIngredientModal());
     dispatch({ type: DELETE_CURRENT_INGREDIENT });
-    navigate("/");
-  }, [dispatch, navigate]);
+    if (location.pathname !== "/") navigate(-1);
+  }, [dispatch, navigate, location.pathname]);
 
+  const background = location.state && location.state.background;
   return (
     <div className={styles.root}>
       <AppHeader />
@@ -78,9 +81,9 @@ export default function App() {
       )}
       {!isRequesting && !isFailed && (
         <div className={styles.container}>
-          <Routes>
+          <Routes location={background || location}>
             <Route path="/" exact={true} element={<HomePage />}>
-              {isOpenModalIngredient ? (
+              {isOpenModalIngredient && background ? (
                 <Route
                   path="ingredients/:id"
                   exact={true}

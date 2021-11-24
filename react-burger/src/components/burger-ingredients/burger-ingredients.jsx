@@ -1,6 +1,6 @@
-import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { useState, useCallback } from "react";
+import { useNavigate, useLocation } from "react-router";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -14,6 +14,7 @@ import { openIngredientModal } from "../../services/actions/modal";
 function BurgerIngredients() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const tabs = [
     {
       name: "bun",
@@ -29,16 +30,19 @@ function BurgerIngredients() {
     },
   ];
 
-  const [current, setCurrent] = React.useState(tabs[0].name);
+  const [current, setCurrent] = useState(tabs[0].name);
   const ingredients = useSelector(
     (store) => store.burgerIngredients.ingredients
   );
 
-  const openModal = useCallback((item) => {
-    dispatch(openIngredientModal());
-    dispatch({ type: SET_CURRENT_INGREDIENT, currentIngredient: item });
-    navigate(`/ingredients/${item._id}`);
-  }, [dispatch, navigate]);
+  const openModal = useCallback(
+    (item) => {
+      dispatch(openIngredientModal());
+      dispatch({ type: SET_CURRENT_INGREDIENT, currentIngredient: item });
+      navigate(`/ingredients/${item._id}`, { state: { background: location } });
+    },
+    [dispatch, navigate, location]
+  );
 
   return (
     <section>
