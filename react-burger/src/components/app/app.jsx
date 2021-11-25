@@ -82,25 +82,12 @@ export default function App() {
       {!isRequesting && !isFailed && (
         <div className={styles.container}>
           <Routes location={background || location}>
-            <Route path="/" exact={true} element={<HomePage />}>
-              {isOpenModalIngredient && background ? (
-                <Route
-                  path="ingredients/:id"
-                  exact={true}
-                  element={
-                    <Modal onClick={closeModal} header="Детали ингредиента">
-                      <IngredientDetails />
-                    </Modal>
-                  }
-                />
-              ) : (
-                <Route
-                  path="ingredients/:id"
-                  exact={true}
-                  element={<IngredientDetails />}
-                />
-              )}
-            </Route>
+            <Route path="/" exact={true} element={<HomePage />} />
+            <Route
+              path="ingredients/:id"
+              exact={true}
+              element={<IngredientDetails />}
+            />
             <Route path="/login" exact={true} element={<LoginPage />} />
             <Route
               path="/register"
@@ -133,12 +120,27 @@ export default function App() {
             </Route>
             <Route path="*" exact={true} element={<NotFound404 />} />
           </Routes>
+
+          {/* Show the modal when a `backgroundLocation` is set */}
+          {isOpenModalIngredient && background && (
+            <Routes>
+              <Route
+                path="ingredients/:id"
+                exact={true}
+                element={
+                  <Modal onClick={closeModal} header="Детали ингредиента">
+                    <IngredientDetails />
+                  </Modal>
+                }
+              />
+            </Routes>
+          )}
+          {isOpenModalOrder && (
+            <Modal onClick={closeModal} header="">
+              <OrderDetails />
+            </Modal>
+          )}
         </div>
-      )}
-      {isOpenModalOrder && (
-        <Modal onClick={closeModal} header="">
-          <OrderDetails />
-        </Modal>
       )}
     </div>
   );
