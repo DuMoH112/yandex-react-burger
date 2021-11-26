@@ -9,12 +9,12 @@
 .container {
   display: grid;
   align-items: flex-start;
-  padding-top: 100px;
+  grid-template-columns: 630px 630px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .loader {
-  margin: 250px auto;
+  margin: 150px auto;
   text-shadow: 0 0 10px #af5eaa;
 }

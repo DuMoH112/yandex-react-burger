@@ -1,5 +1,15 @@
 import PropTypes from 'prop-types';
 
+const editedInput = PropTypes.shape({
+    value: PropTypes.string.isRequired,
+    type: PropTypes.oneOf(['text', 'email', 'password']),
+    name: PropTypes.string.isRequired,
+    placeholder: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    validateFunction: PropTypes.func,
+    size: PropTypes.oneOf(['default', 'small'])
+});
+
 const item = PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -17,4 +27,4 @@ const item = PropTypes.shape({
 
 const data = PropTypes.arrayOf(item);
 
-export { data, item };
+export { data, item, editedInput };

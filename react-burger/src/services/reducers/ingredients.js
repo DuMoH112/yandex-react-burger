@@ -16,6 +16,8 @@ import {
 } from '../actions/ingredients';
 
 const initialState = {
+    isRequesting: false,
+    isFailed: false,
     ingredients: [],
     constructorIngredients: [],
     currentBun: null,
@@ -28,26 +30,47 @@ const initialState = {
 export const getIngredientsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_INGREDIENTS_REQUEST: {
-            return { ...state }
+            return {
+                ...state,
+                isRequesting: true,
+                isFailed: false
+            }
         }
         case GET_INGREDIENTS_SUCCESS: {
-            return { ...state, ingredients: action.data }
+            return {
+                ...state,
+                isRequesting: false,
+                isFailed: false,
+                ingredients: action.data
+            }
         }
         case GET_INGREDIENTS_FAILED: {
-            return initialState
+            return {
+                ...state,
+                isRequesting: false,
+                isFailed: true
+            }
         }
         case GET_ORDER_NUMBER_REQUEST: {
-            return { ...state }
+            return {
+                ...state,
+                isRequesting: true,
+                isFailed: false
+            }
         }
         case GET_ORDER_NUMBER_SUCCESS: {
             return {
                 ...state,
+                isRequesting: false,
+                isFailed: false,
                 order: { orderNumber: action.orderNumber }
             }
         }
         case GET_ORDER_NUMBER_FAILED: {
             return {
                 ...state,
+                isRequesting: false,
+                isFailed: true,
                 order: { orderNumber: 0 }
             }
         }
@@ -92,7 +115,7 @@ export const getIngredientsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 constructorIngredients: replacedConstructorIngredients
-            } 
+            }
         }
         default: {
             return state;

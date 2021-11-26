@@ -1,50 +1,54 @@
-import { useDispatch, useSelector } from 'react-redux';
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { useDrop } from 'react-dnd';
+import { useDispatch, useSelector } from "react-redux";
+import { useMemo } from "react";
+import { useDrop } from "react-dnd";
+import { useNavigate } from "react-router-dom";
 
-import { 
-  ConstructorElement, 
+import {
+  ConstructorElement,
   CurrencyIcon,
-  Button
-} from '@ya.praktikum/react-developer-burger-ui-components';
+  Button,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import BurgerConstructorItem from '../burger-constructor-item/burger-constructor-item';
-import styleBurgerConstructor from './burger-constructor.module.css';
-import { 
+import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
+import styleBurgerConstructor from "./burger-constructor.module.css";
+import {
   getOrderNumber,
-  ADD_INGREDIENT_TO_CONSTRUCTOR, 
-  ADD_BUN_TO_CONSTRUCTOR
-} from '../../services/actions/ingredients'
+  ADD_INGREDIENT_TO_CONSTRUCTOR,
+  ADD_BUN_TO_CONSTRUCTOR,
+} from "../../services/actions/ingredients";
+import { openOrderModal } from "../../services/actions/modal";
 
-function BurgerConstructor(props) {
+function BurgerConstructor() {
   const dispatch = useDispatch();
-  const { 
-    constructorIngredients,
-    currentBun
-  } = useSelector(store => store.burgerIngredients)
+  const { constructorIngredients, currentBun } = useSelector(
+    (store) => store.burgerIngredients
+  );
+  const { isAuth } = useSelector((store) => store.user);
+  const navigate = useNavigate();
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",
     drop(item) {
-      if (item.type === 'bun') {
+      if (item.type === "bun") {
         dispatch({
           type: ADD_BUN_TO_CONSTRUCTOR,
-          draggedIngredient: item
+          draggedIngredient: item,
         });
-      }
-      else {
+      } else {
         dispatch({
           type: ADD_INGREDIENT_TO_CONSTRUCTOR,
-          draggedIngredient: item
+          draggedIngredient: item,
         });
       }
-    }
+    },
   });
 
-  const totalPrice = useSelector(store => store.burgerIngredients.constructorIngredients).reduce((sum, { price }) => {
-    return sum + price
-  }, 0) + (currentBun ? currentBun.price * 2 : 0);
+  const totalPrice =
+    useSelector(
+      (store) => store.burgerIngredients.constructorIngredients
+    ).reduce((sum, { price }) => {
+      return sum + price;
+    }, 0) + (currentBun ? currentBun.price * 2 : 0);
 
   const topElement = useMemo(() => {
     return currentBun ? (
@@ -55,7 +59,9 @@ function BurgerConstructor(props) {
         price={currentBun.price}
         thumbnail={currentBun.image}
       />
-    ) : ''
+    ) : (
+      ""
+    );
   }, [currentBun]);
 
   const bottomElement = useMemo(() => {
@@ -67,8 +73,14 @@ function BurgerConstructor(props) {
         price={currentBun.price}
         thumbnail={currentBun.image}
       />
-    ) : ''
+    ) : (
+      ""
+    );
   }, [currentBun]);
+
+  const openModal = () => {
+    dispatch(openOrderModal());
+  };
 
   return (
     <section className={styleBurgerConstructor.root}>
@@ -77,37 +89,47 @@ function BurgerConstructor(props) {
           {topElement}
         </div>
         <div className={`${styleBurgerConstructor.scrollable} mb-4`}>
-        {
-          constructorIngredients.map((item, index) => (
-              <BurgerConstructorItem item={item} key={index} index={index}/>
-            )
-          )
-        }
+          {constructorIngredients.map((item, index) => (
+            <BurgerConstructorItem item={item} key={index} index={index} />
+          ))}
         </div>
         <div className={`${styleBurgerConstructor.item} mb-4`}>
           {bottomElement}
         </div>
       </div>
       <div className={`${styleBurgerConstructor.total} mt-10`}>
-        <span className={`${styleBurgerConstructor.totalSum} mr-10 text_type_digits-medium`}>
-          {totalPrice} 
+        <span
+          className={`${styleBurgerConstructor.totalSum} mr-10 text_type_digits-medium`}
+        >
+          {totalPrice}
           <CurrencyIcon type="primary" />
         </span>
-        <Button type="primary" size="large" onClick={() => {
-          if (currentBun != null && constructorIngredients.length > 0) {
-            dispatch(getOrderNumber([currentBun, ...constructorIngredients, currentBun]));
-            props.openModal()
-          } 
-        }}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={() => {
+            if (!isAuth) {
+              navigate("/login");
+              return;
+            }
+
+            if (currentBun != null && constructorIngredients.length > 0) {
+              dispatch(
+                getOrderNumber([
+                  currentBun,
+                  ...constructorIngredients,
+                  currentBun,
+                ])
+              );
+              openModal();
+            }
+          }}
+        >
           Оформить заказ
         </Button>
       </div>
     </section>
   );
-};
-
-BurgerConstructor.propTypes = {
-  openModal: PropTypes.func.isRequired
-};
+}
 
 export default BurgerConstructor;

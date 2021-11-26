@@ -1,0 +1,14 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.content {
+  margin: auto;
+}
+
+.link {
+  color: var(--color-title);
+}

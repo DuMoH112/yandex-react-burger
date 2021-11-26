@@ -1,7 +1,11 @@
 import { combineReducers } from "redux";
 
 import { getIngredientsReducer } from './ingredients'
+import { modalReducer } from "./modal";
+import { userReducer } from "./user";
 
 export const rootReducer = combineReducers({
-    burgerIngredients: getIngredientsReducer
-}); 
+    modal: modalReducer,
+    burgerIngredients: getIngredientsReducer,
+    user: userReducer
+});
