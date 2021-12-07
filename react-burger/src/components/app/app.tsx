@@ -20,9 +20,9 @@ import { getCookie } from "../../services/cookies";
 import RequireAuth from "../require-auth";
 
 import AppHeader from "../app-header/app-header";
-import Modal from "../../components/modal/modal";
+import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import IngredientDetails from "../../components/ingredient-details/ingredient-details";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 
 import {
   DELETE_CURRENT_INGREDIENT,
