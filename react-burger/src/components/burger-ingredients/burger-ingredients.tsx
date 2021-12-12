@@ -59,19 +59,6 @@ const BurgerIngredients = () => {
       ));
   }, [ingredients, current, openModal]);
 
-  const tabList = useMemo(() => {
-    return tabs.map((tab) => (
-      <Tab
-        onClick={setCurrent}
-        active={current === tab.name}
-        value={tab.name}
-        key={tab.name}
-      >
-        {tab.title}
-      </Tab>
-    ));
-  }, [tabs, current]);
-
   return (
     <section>
       <h1 className={`text_type_main-large`}>Соберите бургер</h1>
@@ -79,7 +66,16 @@ const BurgerIngredients = () => {
         className={stylesBurgerIngredients.selection_header}
         style={{ display: "flex" }}
       >
-        {tabList}
+        {tabs.map((tab) => (
+          <Tab
+            onClick={setCurrent}
+            active={current === tab.name}
+            value={tab.name}
+            key={tab.name}
+          >
+            {tab.title}
+          </Tab>
+        ))}
       </div>
       <ul className={`${stylesBurgerIngredients.card_container}`}>
         {ingredientsList}
