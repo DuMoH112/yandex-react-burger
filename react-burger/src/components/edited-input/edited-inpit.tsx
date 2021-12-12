@@ -2,24 +2,24 @@ import React, { useState } from "react";
 
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { editedInput } from "../../utils/types";
+import { IEditedInput } from "../../utils/interfaces";
 
-function EditedInput(_ref) {
+const EditedInput = (_ref: IEditedInput) => {
   const value = _ref.value,
     type = _ref.type === void 0 ? "text" : _ref.type,
     name = _ref.name,
     placeholder = _ref.placeholder,
     onChange = _ref.onChange,
-    validateFunction = _ref.validateFunction,
+    validateFunction = _ref.validateFunction as Function,
     size = _ref.size === void 0 ? "default" : _ref.size;
   const [error, setError] = useState(false);
   const [fieldDisabled, setDisabled] = useState(true);
-  const inputRef = React.useRef(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const onIconClick = function onIconClick() {
+  const onIconClick = () => {
     setDisabled(false);
     setTimeout(function () {
-      var _inputRef$current;
+      let _inputRef$current;
       return (_inputRef$current = inputRef.current) === null ||
         _inputRef$current === void 0
         ? void 0
@@ -27,7 +27,7 @@ function EditedInput(_ref) {
     }, 0);
   };
 
-  const validateField = function validateField(value) {
+  const validateField = (value: string) => {
     if (Boolean(validateFunction)) setError(!validateFunction(value));
   };
 
@@ -35,7 +35,7 @@ function EditedInput(_ref) {
     setError(false);
   };
 
-  const onBlur = function onBlur(e) {
+  const onBlur = function onBlur(e: React.FocusEvent<HTMLInputElement>) {
     if (e.target.value) {
       validateField(e.target.value);
     } else {
@@ -51,7 +51,9 @@ function EditedInput(_ref) {
       placeholder={placeholder}
       icon={"EditIcon"}
       value={value}
-      onChange={onChange}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+        return onChange(e);
+      }}
       ref={inputRef}
       onIconClick={onIconClick}
       onBlur={onBlur}
@@ -63,9 +65,5 @@ function EditedInput(_ref) {
     />
   );
 }
-
-EditedInput.propTypes = {
-  _ref: editedInput,
-};
 
 export default EditedInput;

@@ -11,7 +11,7 @@ import {
 
 import styles from "./app-header.module.css";
 
-function AppHeader() {
+const AppHeader = () => {
   const location = useLocation();
   const classNames = useMemo(() => {
     return {

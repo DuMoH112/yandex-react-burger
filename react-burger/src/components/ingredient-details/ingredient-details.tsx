@@ -4,17 +4,19 @@ import { useSelector } from "react-redux";
 
 import stylesDetails from "./ingredient-details.module.css";
 
-function IngredientDetails() {
+import { IBurgerIngredients, IIngredient, IModal } from "../../utils/interfaces";
+
+const IngredientDetails = () => {
   const { currentIngredient, ingredients } = useSelector(
-    (store) => store.burgerIngredients
+    (store: {burgerIngredients: IBurgerIngredients}) => store.burgerIngredients
   );
-  const { isOpenModalIngredient } = useSelector((store) => store.modal);
+  const { isOpenModalIngredient } = useSelector((store: {modal: IModal}) => store.modal);
   const { id } = useParams();
 
   const ingredient = useMemo(() => {
     return JSON.stringify(currentIngredient) !== "{}"
       ? currentIngredient
-      : ingredients.find((item) => item._id === id);
+      : (ingredients as IIngredient[]).find((item: IIngredient) => item._id === id);
   }, [currentIngredient, ingredients, id]);
 
   const className = isOpenModalIngredient

@@ -18,17 +18,20 @@ import {
 } from "../../services/actions/ingredients";
 import { openOrderModal } from "../../services/actions/modal";
 
-function BurgerConstructor() {
+import { IBurgerIngredients, IIngredient, IUser } from "../../utils/interfaces";
+
+const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const { constructorIngredients, currentBun } = useSelector(
-    (store) => store.burgerIngredients
+    (store: { burgerIngredients: IBurgerIngredients }) =>
+      store.burgerIngredients
   );
-  const { isAuth } = useSelector((store) => store.user);
+  const { isAuth } = useSelector((store: { user: IUser }) => store.user);
   const navigate = useNavigate();
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(item) {
+    drop(item: IIngredient) {
       if (item.type === "bun") {
         dispatch({
           type: ADD_BUN_TO_CONSTRUCTOR,
@@ -44,9 +47,12 @@ function BurgerConstructor() {
   });
 
   const totalPrice =
-    useSelector(
-      (store) => store.burgerIngredients.constructorIngredients
-    ).reduce((sum, { price }) => {
+    (
+      useSelector(
+        (store: { burgerIngredients: IBurgerIngredients }) =>
+          store.burgerIngredients.constructorIngredients
+      ) as any[]
+    ).reduce((sum: number, { price }: { price: number }) => {
       return sum + price;
     }, 0) + (currentBun ? currentBun.price * 2 : 0);
 
@@ -130,6 +136,6 @@ function BurgerConstructor() {
       </div>
     </section>
   );
-}
+};
 
 export default BurgerConstructor;

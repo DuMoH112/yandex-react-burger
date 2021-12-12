@@ -1,16 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import stylesBurgerItem from './burger-ingredients-item.module.css';
-import { item } from '../../utils/types';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
 
-function BurgerIngredientsItem(props) {
-  const ingredients = useSelector(store => store.burgerIngredients.constructorIngredients).filter(item => item._id === props.item._id);
-  const currentBun = [useSelector(store => store.burgerIngredients.currentBun)].filter(item => item && item._id === props.item._id)
+import { IBurgerIngredients, IIngredient } from '../../utils/interfaces';
+
+interface IProps {
+  item: IIngredient;
+  openModal: (item: IIngredient) => void;
+}
+
+const BurgerIngredientsItem = (props: IProps) => {
+  const ingredients = useSelector((store: {burgerIngredients: IBurgerIngredients}) => (store.burgerIngredients.constructorIngredients) as any[]).filter(item => item._id === props.item._id);
+  const currentBun = [useSelector((store: {burgerIngredients: IBurgerIngredients}) => store.burgerIngredients.currentBun)].filter(item => item && item._id === props.item._id)
 
   const [, dragRef] = useDrag({
     type: "ingredient",
@@ -37,11 +40,6 @@ function BurgerIngredientsItem(props) {
       </li>
     </>
   );
-};
-
-BurgerIngredientsItem.propTypes = {
-  item: item.isRequired,
-  openModal: PropTypes.func.isRequired
 };
 
 export default BurgerIngredientsItem;
