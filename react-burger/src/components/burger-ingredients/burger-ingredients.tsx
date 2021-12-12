@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -34,7 +34,8 @@ const BurgerIngredients = () => {
 
   const [current, setCurrent] = useState(tabs[0].name);
   const ingredients = useSelector(
-    (store: {burgerIngredients: IBurgerIngredients}) => store.burgerIngredients.ingredients
+    (store: { burgerIngredients: IBurgerIngredients }) =>
+      store.burgerIngredients.ingredients
   );
 
   const openModal = useCallback(
@@ -46,6 +47,31 @@ const BurgerIngredients = () => {
     [dispatch, navigate, location]
   );
 
+  const ingredientsList = useMemo(() => {
+    return (ingredients as IIngredient[])
+      .filter((el) => el.type === current)
+      .map((item) => (
+        <BurgerIngredientsItem
+          key={item._id}
+          item={item}
+          openModal={openModal}
+        />
+      ));
+  }, [ingredients, current, openModal]);
+
+  const tabList = useMemo(() => {
+    return tabs.map((tab) => (
+      <Tab
+        onClick={setCurrent}
+        active={current === tab.name}
+        value={tab.name}
+        key={tab.name}
+      >
+        {tab.title}
+      </Tab>
+    ));
+  }, [tabs, current]);
+
   return (
     <section>
       <h1 className={`text_type_main-large`}>Соберите бургер</h1>
@@ -53,30 +79,13 @@ const BurgerIngredients = () => {
         className={stylesBurgerIngredients.selection_header}
         style={{ display: "flex" }}
       >
-        {tabs.map((tab) => (
-          <Tab
-            onClick={setCurrent}
-            active={current === tab.name}
-            value={tab.name}
-            key={tab.name}
-          >
-            {tab.title}
-          </Tab>
-        ))}
+        {tabList}
       </div>
       <ul className={`${stylesBurgerIngredients.card_container}`}>
-        {(ingredients as IIngredient[])
-          .filter((el) => el.type === current)
-          .map((item) => (
-            <BurgerIngredientsItem
-              key={item._id}
-              item={item}
-              openModal={openModal}
-            />
-          ))}
+        {ingredientsList}
       </ul>
     </section>
   );
-}
+};
 
 export default BurgerIngredients;
