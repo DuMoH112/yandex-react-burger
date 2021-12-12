@@ -8,7 +8,6 @@ import {
   Button,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import AppHeader from "../../components/app-header/app-header";
 import { register } from "../../services/actions/user";
 
 import { IUser } from "../../utils/interfaces";
@@ -31,49 +30,46 @@ export const RegistrationPage = () => {
   };
 
   return (
-    <>
-      <AppHeader />
-      <div className={styles.container}>
-        <h1 className="text text_type_main-medium mb-6">Регистрация</h1>
-        <form
-          id="registration-form"
-          className={styles.form}
-          onSubmit={onHandleForm}
+    <div className={styles.container}>
+      <h1 className="text text_type_main-medium mb-6">Регистрация</h1>
+      <form
+        id="registration-form"
+        className={styles.form}
+        onSubmit={onHandleForm}
+      >
+        <Input
+          name={"name"}
+          placeholder={"Имя"}
+          onChange={onChange}
+          value={form.name}
+        />
+        <Input
+          type="email"
+          name="email"
+          placeholder={"E-mail"}
+          value={form.email}
+          onChange={onChange}
+        />
+        <PasswordInput
+          name="password"
+          value={form.password}
+          onChange={onChange}
+        />
+        <Button type="primary" size="large">
+          Зарегистрироваться
+        </Button>
+      </form>
+      <div className={styles.container_text}>
+        <span className="text text_type_main-small text_color_inactive">
+          Уже зарегистрированы?{" "}
+        </span>
+        <Link
+          to="/login"
+          className={`${styles.link} text text_type_main-small`}
         >
-          <Input
-            name={"name"}
-            placeholder={"Имя"}
-            onChange={onChange}
-            value={form.name}
-          />
-          <Input
-            type="email"
-            name="email"
-            placeholder={"E-mail"}
-            value={form.email}
-            onChange={onChange}
-          />
-          <PasswordInput
-            name="password"
-            value={form.password}
-            onChange={onChange}
-          />
-          <Button type="primary" size="large">
-            Зарегистрироваться
-          </Button>
-        </form>
-        <div className={styles.container_text}>
-          <span className="text text_type_main-small text_color_inactive">
-            Уже зарегистрированы?{" "}
-          </span>
-          <Link
-            to="/login"
-            className={`${styles.link} text text_type_main-small`}
-          >
-            Войти
-          </Link>
-        </div>
+          Войти
+        </Link>
       </div>
-    </>
+    </div>
   );
 };
