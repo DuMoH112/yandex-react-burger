@@ -16,7 +16,7 @@ interface IProps {
 const Modal: FC<IProps> = (props) => {
   useEffect(() => {
     const close = (e: KeyboardEvent) => {
-      if (e.keyCode === 27) {
+      if (e.keyCode === 27 || e.key === "Escape") {
         props.onClick();
       }
     };
