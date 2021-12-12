@@ -31,7 +31,7 @@ export interface IBurgerIngredients {
   ingredients: Array<IIngredient>;
   constructorIngredients: Array<IIngredient>;
   currentBun: IIngredient | null;
-  currentIngredient: IIngredient;
+  currentIngredient: IIngredient | null;
   order: { orderNumber: number };
 }
 
@@ -48,4 +48,11 @@ export interface IUser {
     email: string;
     name: string;
   };
+}
+
+export interface IUserFormData {
+  email?: string;
+  password?: string;
+  name?: string;
+  token?: string;
 }

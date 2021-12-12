@@ -1,14 +1,16 @@
+import { IModal } from '../../utils/interfaces';
 import {
     IS_OPEN_ORDER,
-    IS_OPEN_INGREDIENT
+    IS_OPEN_INGREDIENT,
+    TOpenModalActions
 } from '../actions/modal';
 
-const initialState = {
+const initialState: IModal = {
     isOpenModalOrder: false,
     isOpenModalIngredient: false
 };
 
-export const modalReducer = (state = initialState, action) => {
+export const modalReducer = (state = initialState, action: TOpenModalActions) => {
     switch (action.type) {
         case IS_OPEN_ORDER: {
             return {

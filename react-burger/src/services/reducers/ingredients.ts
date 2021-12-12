@@ -1,3 +1,4 @@
+import { IBurgerIngredients } from '../../utils/interfaces';
 import {
     GET_INGREDIENTS_REQUEST,
     GET_INGREDIENTS_SUCCESS,
@@ -12,22 +13,23 @@ import {
     CLEAR_CONSTRUCTOR,
     ADD_BUN_TO_CONSTRUCTOR,
     DELETE_BUN_FROM_CONSTRUCTOR,
-    REPLACE_INGREDIENTS
+    REPLACE_INGREDIENTS,
+    TIgredientsAndOrdersActions
 } from '../actions/ingredients';
 
-const initialState = {
+const initialState: IBurgerIngredients = {
     isRequesting: false,
     isFailed: false,
     ingredients: [],
     constructorIngredients: [],
     currentBun: null,
-    currentIngredient: {},
+    currentIngredient: null,
     order: {
         orderNumber: 0
     }
 };
 
-export const getIngredientsReducer = (state = initialState, action) => {
+export const getIngredientsReducer = (state = initialState, action: TIgredientsAndOrdersActions) => {
     switch (action.type) {
         case GET_INGREDIENTS_REQUEST: {
             return {
