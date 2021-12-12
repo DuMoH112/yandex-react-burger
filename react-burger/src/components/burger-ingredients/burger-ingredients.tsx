@@ -11,7 +11,9 @@ import { useSelector } from "react-redux";
 import { SET_CURRENT_INGREDIENT } from "../../services/actions/ingredients";
 import { openIngredientModal } from "../../services/actions/modal";
 
-function BurgerIngredients() {
+import { IBurgerIngredients, IIngredient } from "../../utils/interfaces";
+
+const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,7 +34,7 @@ function BurgerIngredients() {
 
   const [current, setCurrent] = useState(tabs[0].name);
   const ingredients = useSelector(
-    (store) => store.burgerIngredients.ingredients
+    (store: {burgerIngredients: IBurgerIngredients}) => store.burgerIngredients.ingredients
   );
 
   const openModal = useCallback(
@@ -63,7 +65,7 @@ function BurgerIngredients() {
         ))}
       </div>
       <ul className={`${stylesBurgerIngredients.card_container}`}>
-        {ingredients
+        {(ingredients as IIngredient[])
           .filter((el) => el.type === current)
           .map((item) => (
             <BurgerIngredientsItem

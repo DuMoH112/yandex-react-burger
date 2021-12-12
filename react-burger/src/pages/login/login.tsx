@@ -11,21 +11,23 @@ import {
 import AppHeader from "../../components/app-header/app-header";
 import { loginning } from "../../services/actions/user";
 
-export function LoginPage() {
+import { IUser } from "../../utils/interfaces";
+
+export const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuth } = useSelector((store) => store.user);
+  const { isAuth } = useSelector((store: { user: IUser }) => store.user);
   const [form, setForm] = useState({ email: "", password: "" });
 
   useEffect(() => {
     if (isAuth) navigate("/");
   }, [isAuth, navigate]);
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onHandleForm = (e) => {
+  const onHandleForm = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(loginning({ ...form }));
     navigate("/");
@@ -58,7 +60,7 @@ export function LoginPage() {
         <div className={styles.container_text}>
           <div>
             <span className="text text_type_main-small text_color_inactive">
-              Вы — новый пользователь?{" "}
+              Вы — новый пользователь?{" "}
             </span>
             <Link
               to="/register"
@@ -82,4 +84,4 @@ export function LoginPage() {
       </div>
     </>
   );
-}
+};

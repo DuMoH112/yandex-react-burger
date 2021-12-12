@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {
   ConstructorElement,
   DragIcon,
@@ -11,25 +10,28 @@ import {
   replaceItems,
 } from "../../services/actions/ingredients";
 import styles from "./burger-constructor-item.module.css";
-import { item } from "../../utils/types";
 
-function BurgerConstructorItem(props) {
+import { IIngredient } from "../../utils/interfaces";
+interface IProps {
+  item: IIngredient;
+  index: number;
+}
+
+const BurgerConstructorItem = (props: IProps) => {
   const dispatch = useDispatch();
 
-  const deleteIngredientFromConstructor = (e, item) => {
-    e.preventDefault();
-
+  const deleteIngredientFromConstructor = (item: IIngredient) => {
     dispatch({
       type: DELETE_INGREDIENT_FROM_CONSTRUCTOR,
       id: item._id,
     });
   };
 
-  const ref = React.useRef(null);
+  const ref = React.useRef<HTMLInputElement>(null);
 
   const [, drop] = useDrop({
     accept: "constructorIngredient",
-    hover: (item, monitor) => {
+    hover: (item: IProps, monitor: any) => {
       if (!ref.current) return;
 
       const dragIndex = item.index;
@@ -65,26 +67,17 @@ function BurgerConstructorItem(props) {
   drag(drop(ref));
 
   return (
-    <div
-      className={`${styles.item} mb-4`}
-      ref={ref}
-      draggable
-    >
+    <div className={`${styles.item} mb-4`} ref={ref} draggable>
       <DragIcon type="primary" />
       <ConstructorElement
         isLocked={false}
         text={props.item.name}
         price={props.item.price}
         thumbnail={props.item.image}
-        handleClose={(e) => deleteIngredientFromConstructor(e, props.item)}
+        handleClose={(): void => deleteIngredientFromConstructor(props.item)}
       />
     </div>
   );
-}
-
-BurgerConstructorItem.propTypes = {
-  item: item.isRequired,
-  index: PropTypes.number.isRequired,
 };
 
 export default BurgerConstructorItem;

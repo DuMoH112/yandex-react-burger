@@ -10,11 +10,13 @@ import {
 
 import { resetPassword } from "../../services/actions/user";
 
-export function ResetPasswordPage(props) {
+import { IUser } from "../../utils/interfaces";
+
+export const ResetPasswordPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuth } = useSelector((store) => store.user);
+  const { isAuth } = useSelector((store: {user: IUser}) => store.user);
   const [form, setValue] = useState({ password: "", token: "" });
   const [isVisiblePassword, setIsVisiblePassword] = useState(false);
 
@@ -23,11 +25,11 @@ export function ResetPasswordPage(props) {
     if (!location.state) navigate("/login");
   }, [isAuth, location.state, navigate]);
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onHandleForm = (e) => {
+  const onHandleForm = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(resetPassword({ ...form }));
     navigate("/login");

@@ -6,17 +6,23 @@ import styles from "./profile.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import EditedInput from "../../components/edited-input/edited-inpit";
-import { getUserData, loggingOut, patchUserData } from "../../services/actions/user";
+import {
+  getUserData,
+  loggingOut,
+  patchUserData,
+} from "../../services/actions/user";
 
-const validateEmail = function validateEmail(email) {
+import { IUser } from "../../utils/interfaces";
+
+const validateEmail = function validateEmail(email: string) {
   var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email);
 };
 
-export function ProfilePage() {
+export const ProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userData } = useSelector((store) => store.user);
+  const { userData } = useSelector((store: { user: IUser }) => store.user);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -38,12 +44,13 @@ export function ProfilePage() {
     setForm({ name: userData.name, email: userData.email, password: "" });
   }, [dispatch, userData.name, userData.email]);
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e)
     setIsUpdateUserData(true);
     setUpdateForm({ ...updateForm, [e.target.name]: e.target.value });
   };
 
-  const onHandleLogout = (e) => {
+  const onHandleLogout = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(loggingOut());
     navigate("/login");
@@ -118,12 +125,18 @@ export function ProfilePage() {
             }
             onChange={onChange}
           />
-          { isUpdateUserData && <div className={styles.buttonsContainer}>
-            <Button size="medium" onClick={onHandleCacelButton}>Отмена</Button>
-            <Button size="medium" onClick={onHandleSaveButton}>Сохранить</Button>
-          </div>}
+          {isUpdateUserData && (
+            <div className={styles.buttonsContainer}>
+              <Button size="medium" onClick={onHandleCacelButton}>
+                Отмена
+              </Button>
+              <Button size="medium" onClick={onHandleSaveButton}>
+                Сохранить
+              </Button>
+            </div>
+          )}
         </form>
       </div>
     </>
   );
-}
+};

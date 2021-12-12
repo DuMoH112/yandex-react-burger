@@ -10,21 +10,23 @@ import {
 
 import { forgotPassword } from "../../services/actions/user";
 
-export function FrogotPasswordPage() {
+import { IUser } from "../../utils/interfaces";
+
+export const FrogotPasswordPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuth } = useSelector((store) => store.user);
-  const [form, setForm] = useState({ email: "" });
+  const { isAuth } = useSelector((store: { user: IUser }) => store.user);
+  const [form, setForm] = useState<{email: string}>({ email: "" });
 
   useEffect(() => {
     if (isAuth) navigate("/");
   }, [isAuth, navigate]);
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onHandleForm = (e) => {
+  const onHandleForm = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(forgotPassword({ ...form }));
     navigate("/reset-password", { state: true });
@@ -62,4 +64,4 @@ export function FrogotPasswordPage() {
       </div>
     </>
   );
-}
+};

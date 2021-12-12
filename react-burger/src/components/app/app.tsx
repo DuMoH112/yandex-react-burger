@@ -34,15 +34,18 @@ import {
   openIngredientModal,
 } from "../../services/actions/modal";
 
-export default function App() {
+import { IBurgerIngredients, IModal } from "../../utils/interfaces";
+
+const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const { isOpenModalOrder, isOpenModalIngredient } = useSelector(
-    (store) => store.modal
+    (store: { modal: IModal }) => store.modal
   );
   const { isRequesting, isFailed } = useSelector(
-    (store) => store.burgerIngredients
+    (store: { burgerIngredients: IBurgerIngredients }) =>
+      store.burgerIngredients
   );
 
   const isHaveCookie =
@@ -82,43 +85,19 @@ export default function App() {
       {!isRequesting && !isFailed && (
         <div className={styles.container}>
           <Routes location={background || location}>
-            <Route path="/" exact={true} element={<HomePage />} />
-            <Route
-              path="ingredients/:id"
-              exact={true}
-              element={<IngredientDetails />}
-            />
-            <Route path="/login" exact={true} element={<LoginPage />} />
-            <Route
-              path="/register"
-              exact={true}
-              element={<RegistrationPage />}
-            />
-            <Route
-              path="/forgot-password"
-              exact={true}
-              element={<FrogotPasswordPage />}
-            />
-            <Route
-              path="/reset-password"
-              exact={true}
-              element={<ResetPasswordPage />}
-            />
-            <Route path="/orders" exact={true} element={<PlugPage />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="ingredients/:id" element={<IngredientDetails />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegistrationPage />} />
+            <Route path="/forgot-password" element={<FrogotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/orders" element={<PlugPage />} />
             <Route element={<RequireAuth />}>
-              <Route path="/profile" exact={true} element={<ProfilePage />} />
-              <Route
-                path="/profile/orders"
-                exact={true}
-                element={<PlugPage />}
-              />
-              <Route
-                path="/profile/orders/:id"
-                exact={true}
-                element={<PlugPage />}
-              />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/profile/orders" element={<PlugPage />} />
+              <Route path="/profile/orders/:id" element={<PlugPage />} />
             </Route>
-            <Route path="*" exact={true} element={<NotFound404 />} />
+            <Route path="*" element={<NotFound404 />} />
           </Routes>
 
           {/* Show the modal when a `backgroundLocation` is set */}
@@ -126,7 +105,6 @@ export default function App() {
             <Routes>
               <Route
                 path="ingredients/:id"
-                exact={true}
                 element={
                   <Modal onClick={closeModal} header="Детали ингредиента">
                     <IngredientDetails />
@@ -144,4 +122,6 @@ export default function App() {
       )}
     </div>
   );
-}
+};
+
+export default App;

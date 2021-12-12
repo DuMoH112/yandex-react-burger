@@ -11,20 +11,21 @@ import {
 import AppHeader from "../../components/app-header/app-header";
 import { register } from "../../services/actions/user";
 
-export function RegistrationPage() {
+import { IUser } from "../../utils/interfaces";
+
+export const RegistrationPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const { isAuth } = useSelector( store => store.user );
+  const navigate = useNavigate();
+  const { isAuth } = useSelector((store: { user: IUser }) => store.user);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
 
-  if (isAuth)
-    navigate("/")
+  if (isAuth) navigate("/");
 
-  const onChange = (e) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onHandleForm = e => {
+  const onHandleForm = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(register({ ...form }));
   };
@@ -75,4 +76,4 @@ export function RegistrationPage() {
       </div>
     </>
   );
-}
+};
