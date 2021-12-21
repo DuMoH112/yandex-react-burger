@@ -3,11 +3,11 @@ import { URL_BACKEND } from "../../config/path";
 import { AppDispatch, AppThunk } from "../types";
 import { IUser, IUserFormData } from "../../utils/interfaces";
 
-export const IS_REQUESTING = "IS_REQUESTING";
-export const IS_FAILED = "IS_FAILED";
-export const IS_SUCCESSFUL = "IS_SUCCESSFUL";
+export const IS_REQUESTING: "IS_REQUESTING" = "IS_REQUESTING";
+export const IS_FAILED: "IS_FAILED" = "IS_FAILED";
+export const IS_SUCCESSFUL: "IS_SUCCESSFUL" = "IS_SUCCESSFUL";
 
-export const SET_USER_DATA = "SET_USER_DATA";
+export const SET_USER_DATA: "SET_USER_DATA" = "SET_USER_DATA";
 
 export interface IIsRequesting {
   readonly type: typeof IS_REQUESTING;

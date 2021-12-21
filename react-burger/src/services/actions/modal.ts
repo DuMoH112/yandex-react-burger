@@ -1,7 +1,7 @@
 import { deleteCookie, getCookie, setCookie } from "../cookies";
 
-export const IS_OPEN_ORDER = "IS_OPEN_ORDER";
-export const IS_OPEN_INGREDIENT = "IS_OPEN_INGREDIENT";
+export const IS_OPEN_ORDER: "IS_OPEN_ORDER" = "IS_OPEN_ORDER";
+export const IS_OPEN_INGREDIENT: "IS_OPEN_INGREDIENT" = "IS_OPEN_INGREDIENT";
 
 export interface IOpenOrderModal {
   readonly type: typeof IS_OPEN_ORDER;
