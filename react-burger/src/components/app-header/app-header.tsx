@@ -20,10 +20,8 @@ const AppHeader = () => {
         "ingredients" === location.pathname.split("/")[1]
           ? styles.button_active
           : "",
-      orders:
-        "orders" === location.pathname.split("/")[1]
-          ? styles.button_active
-          : "",
+      feed:
+        "feed" === location.pathname.split("/")[1] ? styles.button_active : "",
       profile:
         "profile" === location.pathname.split("/")[1]
           ? styles.button_active
@@ -42,10 +40,10 @@ const AppHeader = () => {
             Конструктор
           </span>
         </Link>
-        <Link to="/orders" className={`${styles.button} ${classLink}`}>
+        <Link to="/feed" className={`${styles.button} ${classLink}`}>
           <ListIcon type="secondary" />
           <span
-            className={`${styles.button_text} ${classNames.orders} text_type_main-default`}
+            className={`${styles.button_text} ${classNames.feed} text_type_main-default`}
           >
             Лента заказов
           </span>
@@ -64,6 +62,6 @@ const AppHeader = () => {
       </nav>
     </header>
   );
-}
+};
 
 export default AppHeader;
