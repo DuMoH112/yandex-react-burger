@@ -38,6 +38,7 @@ export interface IBurgerIngredients {
 export interface IModal {
   isOpenModalOrder: boolean;
   isOpenModalIngredient: boolean;
+  isOpenModalOrderDetails: boolean;
 }
 
 export interface IUser {
@@ -55,4 +56,32 @@ export interface IUserFormData {
   password?: string;
   name?: string;
   token?: string;
+}
+
+export interface IOrderItem {
+  ingredients: string[];
+  _id: string;
+  name: string;
+  status: "done" | "pending" | "created";
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IOrder {
+  success: boolean;
+  total: number;
+  totalToday: number;
+  orders: Array<IOrderItem>;
+}
+
+export interface IOrderNumbers {
+  done: number[];
+  pending: number[];
+}
+
+export interface IOrderState {
+  wsConnected: boolean;
+  currentOrder: IOrderItem | null;
+  orders: IOrder;
 }
