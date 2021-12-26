@@ -12,8 +12,8 @@ import {
   FrogotPasswordPage,
   ResetPasswordPage,
   ProfilePage,
+  FeedPage,
   NotFound404,
-  PlugPage,
 } from "../../pages";
 import { refreshToken } from "../../services/actions/user";
 import { getCookie } from "../../services/cookies";
@@ -23,6 +23,7 @@ import AppHeader from "../app-header/app-header";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import OrderItemDetails from "../order-item-details/order-item-details";
 
 import {
   DELETE_CURRENT_INGREDIENT,
@@ -32,41 +33,102 @@ import {
   closeOrderModal,
   closeIngredientModal,
   openIngredientModal,
+  closeOrderDetailsModal,
 } from "../../services/actions/modal";
 
-import { IBurgerIngredients, IModal } from "../../utils/interfaces";
+import { RootState } from "../../services/types";
+import {
+  ORDER_DELETE_CURRENT_ORDER,
+  wsOrderConnectionClosed,
+  wsOrderConnectionStart,
+  wsUserOrderConnectionClosed,
+  wsUserOrderConnectionStart,
+} from "../../services/actions/orders";
+
+import { IBurgerIngredients } from "../../utils/interfaces";
 
 const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isOpenModalOrder, isOpenModalIngredient } = useSelector(
-    (store: { modal: IModal }) => store.modal
-  );
+
   const { isRequesting, isFailed } = useSelector(
+    (store: RootState) => store.burgerIngredients && store.user
+  );
+
+  const { wsConnected, orders } = useSelector((store: RootState) => store.orders);
+  const { ingredients } = useSelector(
     (store: { burgerIngredients: IBurgerIngredients }) =>
       store.burgerIngredients
   );
 
-  const isHaveCookie =
-    getCookie("isOpenIngredientModal") === "true" ? true : false;
-  const isHaveRefreshToken = Boolean(getCookie("refreshToken"));
-
   useEffect(() => {
-    dispatch(getIngredients());
+    let url = location.pathname;
+    let splitedUrl = url.split("/");
+    if (
+      !wsConnected &&
+      (url === "/profile/orders" || splitedUrl[2] === "orders")
+    ) {
+      dispatch(wsUserOrderConnectionStart());
+    }
+    if (!wsConnected && (url === "/feed" || splitedUrl[1] === "feed")) {
+      dispatch(wsOrderConnectionStart());
+    }
+    if (
+      wsConnected &&
+      url !== "/feed" &&
+      url !== "/profile/orders" &&
+      splitedUrl[1] !== "feed" &&
+      splitedUrl[2] !== "orders"
+    ) {
+      dispatch(wsOrderConnectionClosed());
+      dispatch(wsUserOrderConnectionClosed());
+    }
+    if (ingredients.length === 0) {
+      dispatch(getIngredients());
+    }
+  }, [dispatch, wsConnected, location.pathname, ingredients.length, orders]);
+
+  // ------------Refresh access token------------
+  const isHaveRefreshToken = Boolean(getCookie("refreshToken"));
+  useEffect(() => {
     if (isHaveRefreshToken) dispatch(refreshToken());
   }, [dispatch, isHaveRefreshToken]);
+  // --------------------------------------------
 
+  // -Open openIngredientModal after reload page-
+  const isHaveCookie =
+    getCookie("isOpenIngredientModal") === "true" ? true : false;
   useEffect(() => {
     if (isHaveCookie) dispatch(openIngredientModal());
   }, [dispatch, isHaveCookie]);
+  // --------------------------------------------
 
+  // -------------Close modal window-------------
+  const { isOpenModalOrder, isOpenModalIngredient, isOpenModalOrderDetails } =
+    useSelector((store: RootState) => store.modal);
   const closeModal = useCallback(() => {
-    dispatch(closeOrderModal());
-    dispatch(closeIngredientModal());
-    dispatch({ type: DELETE_CURRENT_INGREDIENT });
+    if (isOpenModalIngredient) {
+      dispatch(closeIngredientModal());
+      dispatch({ type: DELETE_CURRENT_INGREDIENT });
+    }
+    if (isOpenModalOrderDetails) {
+      dispatch(closeOrderDetailsModal());
+      dispatch({ type: ORDER_DELETE_CURRENT_ORDER });
+    }
+    if (isOpenModalOrder) {
+      dispatch(closeOrderModal());
+    }
     if (location.pathname !== "/") navigate(-1);
-  }, [dispatch, navigate, location.pathname]);
+  }, [
+    dispatch,
+    navigate,
+    location.pathname,
+    isOpenModalIngredient,
+    isOpenModalOrderDetails,
+    isOpenModalOrder,
+  ]);
+  // --------------------------------------------
 
   const background = location.state && location.state.background;
   return (
@@ -86,28 +148,56 @@ const App = () => {
         <div className={styles.container}>
           <Routes location={background || location}>
             <Route path="/" element={<HomePage />} />
-            <Route path="ingredients/:id" element={<IngredientDetails />} />
+            <Route path="/ingredients/:id" element={<IngredientDetails />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegistrationPage />} />
             <Route path="/forgot-password" element={<FrogotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/orders" element={<PlugPage />} />
+            <Route path="/feed" element={<FeedPage />} />
+            <Route path="/feed/:id" element={<OrderItemDetails />} />
             <Route element={<RequireAuth />}>
               <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/profile/orders" element={<PlugPage />} />
-              <Route path="/profile/orders/:id" element={<PlugPage />} />
+              <Route path="/profile/orders" element={<ProfilePage />} />
+              <Route
+                path="/profile/orders/:id"
+                element={<OrderItemDetails />}
+              />
             </Route>
             <Route path="*" element={<NotFound404 />} />
           </Routes>
 
           {/* Show the modal when a `backgroundLocation` is set */}
-          {isOpenModalIngredient && background && (
+          {(isOpenModalIngredient || isOpenModalOrderDetails) && background && (
             <Routes>
               <Route
-                path="ingredients/:id"
+                path="/ingredients/:id"
                 element={
                   <Modal onClick={closeModal} header="Детали ингредиента">
                     <IngredientDetails />
+                  </Modal>
+                }
+              />
+              <Route
+                path="/feed/:id"
+                element={
+                  <Modal
+                    onClick={closeModal}
+                    header={`#${location.state.header}`}
+                    header_style={"text_type_digits-default"}
+                  >
+                    <OrderItemDetails />
+                  </Modal>
+                }
+              />
+              <Route
+                path="/profile/orders/:id"
+                element={
+                  <Modal
+                    onClick={closeModal}
+                    header={`#${location.state.header}`}
+                    header_style={"text_type_digits-default"}
+                  >
+                    <OrderItemDetails />
                   </Modal>
                 }
               />

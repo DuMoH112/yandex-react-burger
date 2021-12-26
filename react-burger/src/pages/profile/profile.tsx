@@ -1,17 +1,19 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./profile.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import EditedInput from "../../components/edited-input/edited-inpit";
+import { OrderList } from "../../components/order-list/order-list";
 import {
   getUserData,
   loggingOut,
   patchUserData,
 } from "../../services/actions/user";
 
+import { RootState } from "../../services/types";
 import { IUser } from "../../utils/interfaces";
 
 const validateEmail = function validateEmail(email: string) {
@@ -21,7 +23,22 @@ const validateEmail = function validateEmail(email: string) {
 
 export const ProfilePage = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const [description, setDescription] = useState("");
+
+  const classNames = useMemo(() => {
+    return {
+      profile: "/profile" === location.pathname ? styles.button_active : "",
+      orders:
+        "orders" === location.pathname.split("/")[2]
+          ? styles.button_active
+          : "",
+    };
+  }, [location.pathname]);
+
+  // ----/profile----
   const { userData } = useSelector((store: { user: IUser }) => store.user);
   const [form, setForm] = useState({
     name: "",
@@ -35,25 +52,9 @@ export const ProfilePage = () => {
     password: "",
   });
 
-  const [description] = useState(
-    "В этом разделе вы можете изменить свои персональные данные"
-  );
-
-  useEffect(() => {
-    dispatch(getUserData());
-    setForm({ name: userData.name, email: userData.email, password: "" });
-  }, [dispatch, userData.name, userData.email]);
-
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e)
     setIsUpdateUserData(true);
     setUpdateForm({ ...updateForm, [e.target.name]: e.target.value });
-  };
-
-  const onHandleLogout = (e: React.FormEvent) => {
-    e.preventDefault();
-    dispatch(loggingOut());
-    navigate("/login");
   };
 
   const onHandleCacelButton = useCallback(() => {
@@ -69,6 +70,43 @@ export const ProfilePage = () => {
     dispatch(patchUserData({ ...updateForm }));
     setIsUpdateUserData(false);
   }, [dispatch, updateForm]);
+  // ----------------
+
+  // ----/profile/orders----
+  const { orders } = useSelector((store: RootState) => store.orders);
+  // -----------------------
+
+  useEffect(() => {
+    switch (location.pathname) {
+      case "/profile":
+        setDescription(
+          "В этом разделе вы можете изменить свои персональные данные"
+        );
+        if (
+          JSON.stringify(userData) === JSON.stringify({ email: "", name: "" })
+        ) {
+          dispatch(getUserData());
+        } else {
+          setForm({ name: userData.name, email: userData.email, password: "" });
+        }
+        break;
+      case "/profile/orders":
+        setDescription(
+          "В этом разделе вы можете просмотреть свою историю заказов"
+        );
+        break;
+      default:
+        break;
+    }
+  }, [dispatch, userData, location.pathname]);
+
+  // ----/logout----
+  const onHandleLogout = (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(loggingOut());
+    navigate("/login");
+  };
+  // ---------------
 
   return (
     <>
@@ -76,14 +114,14 @@ export const ProfilePage = () => {
         <div className={styles.container_navigate}>
           <Link to="/profile" className={styles.button}>
             <span
-              className={`${styles.button_text} ${styles.button_active} text text_type_main-medium`}
+              className={`${styles.button_text} ${classNames.profile} text text_type_main-medium`}
             >
               Профиль
             </span>
           </Link>
           <Link to="/profile/orders" className={styles.button}>
             <span
-              className={`${styles.button_text} text text_type_main-medium`}
+              className={`${styles.button_text} ${classNames.orders} text text_type_main-medium`}
             >
               История заказов
             </span>
@@ -101,41 +139,59 @@ export const ProfilePage = () => {
             {description}
           </span>
         </div>
-        <form className={styles.form}>
-          <EditedInput
-            name={"name"}
-            placeholder={"Имя"}
-            value={updateForm.name === "" ? form.name : updateForm.name}
-            onChange={onChange}
-          />
-          <EditedInput
-            type="email"
-            name="email"
-            placeholder={"E-mail"}
-            value={updateForm.email === "" ? form.email : updateForm.email}
-            onChange={onChange}
-            validateFunction={validateEmail}
-          />
-          <EditedInput
-            type="password"
-            name="password"
-            placeholder={"Пароль"}
-            value={
-              updateForm.password === "" ? form.password : updateForm.password
-            }
-            onChange={onChange}
-          />
-          {isUpdateUserData && (
-            <div className={styles.buttonsContainer}>
-              <Button size="medium" onClick={onHandleCacelButton}>
-                Отмена
-              </Button>
-              <Button size="medium" onClick={onHandleSaveButton}>
-                Сохранить
-              </Button>
-            </div>
-          )}
-        </form>
+        {location.pathname === "/profile" && (
+          <form className={styles.form}>
+            <EditedInput
+              name={"name"}
+              placeholder={"Имя"}
+              value={updateForm.name === "" ? form.name : updateForm.name}
+              onChange={onChange}
+            />
+            <EditedInput
+              type="email"
+              name="email"
+              placeholder={"E-mail"}
+              value={updateForm.email === "" ? form.email : updateForm.email}
+              onChange={onChange}
+              validateFunction={validateEmail}
+            />
+            <EditedInput
+              type="password"
+              name="password"
+              placeholder={"Пароль"}
+              value={
+                updateForm.password === "" ? form.password : updateForm.password
+              }
+              onChange={onChange}
+            />
+            {isUpdateUserData && (
+              <div className={styles.buttonsContainer}>
+                <Button size="medium" onClick={onHandleCacelButton}>
+                  Отмена
+                </Button>
+                <Button size="medium" onClick={onHandleSaveButton}>
+                  Сохранить
+                </Button>
+              </div>
+            )}
+          </form>
+        )}
+        {location.pathname.split("/")[2] === "orders" && (
+          <div className={orders.orders.length !== 0 ? styles.order_list: styles.empty_order_list}>
+            {orders.orders.length !== 0 ? (
+              <OrderList
+                orderList={orders.orders || []}
+                showStatus={true}
+                componentMountedFrom={"orders"}
+              />
+            ) : (
+              <h3 className={`text text_type_main-medium`}>
+                Вы ещё не совершили заказ. Для заказа перейдите на страницу{" "}
+                <Link to="/">конструктура</Link>
+              </h3>
+            )}
+          </div>
+        )}
       </div>
     </>
   );

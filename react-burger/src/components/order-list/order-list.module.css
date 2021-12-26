@@ -1,0 +1,37 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  padding-right: 8px;
+  margin: 0;
+  list-style: none;
+  overflow-y: auto;
+}
+.list_orders {
+  max-width: 840px;
+  overflow-y: scroll;
+  max-height: 860px;
+}
+
+.list_feed {
+  max-width: 600px;
+}
+
+.list a {
+  text-decoration: none;
+}
+
+.list::-webkit-scrollbar {
+  width: 12px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: #2f2f37;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background: #8585ad;
+  border: 3px solid #2f2f37;
+  border-radius: 6px;
+}
