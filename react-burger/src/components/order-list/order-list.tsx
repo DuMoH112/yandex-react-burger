@@ -1,5 +1,5 @@
 import { FC, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../services/hooks";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./order-list.module.css";
 import { OrderItem } from "../order-item/order-item";

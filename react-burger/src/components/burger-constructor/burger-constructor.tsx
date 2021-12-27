@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks";
 import { useMemo } from "react";
 import { useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";

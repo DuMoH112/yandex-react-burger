@@ -1,7 +1,7 @@
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import stylesDetails from './order-details.module.css';
-import { useSelector } from 'react-redux';
+import { useSelector } from "../../services/hooks";
 
 import { IBurgerIngredients } from '../../utils/interfaces';
 

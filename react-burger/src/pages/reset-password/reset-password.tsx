@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import styles from "./reset-password.module.css";

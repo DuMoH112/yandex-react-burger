@@ -1,5 +1,5 @@
 import { FC, useCallback } from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./order-item.module.css";
 import {

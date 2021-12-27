@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector } from "../services/hooks";
 
 import { IUser } from "../utils/interfaces";
 

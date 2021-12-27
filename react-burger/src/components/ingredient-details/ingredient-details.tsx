@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import { useParams } from "react-router";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
 
 import stylesDetails from "./ingredient-details.module.css";
 

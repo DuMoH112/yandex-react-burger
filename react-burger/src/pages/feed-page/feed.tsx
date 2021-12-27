@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
 
 import styles from "./feed.module.css";
 import { OrderList } from "../../components/order-list/order-list";
