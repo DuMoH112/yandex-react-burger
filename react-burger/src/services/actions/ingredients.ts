@@ -1,6 +1,7 @@
 import { URL_BACKEND } from "../../config/path";
 import { IIngredient } from "../../utils/interfaces";
 import { AppDispatch, AppThunk } from "../types";
+import { getCookie } from "../cookies";
 
 export const GET_INGREDIENTS_REQUEST: "GET_INGREDIENTS_REQUEST" = "GET_INGREDIENTS_REQUEST";
 export const GET_INGREDIENTS_SUCCESS: "GET_INGREDIENTS_SUCCESS" = "GET_INGREDIENTS_SUCCESS";
@@ -9,6 +10,7 @@ export const GET_INGREDIENTS_FAILED: "GET_INGREDIENTS_FAILED" = "GET_INGREDIENTS
 export const GET_ORDER_NUMBER_REQUEST: "GET_ORDER_NUMBER_REQUEST" = "GET_ORDER_NUMBER_REQUEST";
 export const GET_ORDER_NUMBER_SUCCESS: "GET_ORDER_NUMBER_SUCCESS" = "GET_ORDER_NUMBER_SUCCESS";
 export const GET_ORDER_NUMBER_FAILED: "GET_ORDER_NUMBER_FAILED" = "GET_ORDER_NUMBER_FAILED";
+export const CLEAR_ORDER_NUMBER_SUCCESS: "CLEAR_ORDER_NUMBER_SUCCESS" = "CLEAR_ORDER_NUMBER_SUCCESS";
 
 export const SET_CURRENT_INGREDIENT: "SET_CURRENT_INGREDIENT" = "SET_CURRENT_INGREDIENT";
 export const DELETE_CURRENT_INGREDIENT: "DELETE_CURRENT_INGREDIENT" = "DELETE_CURRENT_INGREDIENT";
@@ -45,6 +47,10 @@ export interface IGetOrderNumberSuccess {
 
 export interface IGetOrderNumberFailed {
   readonly type: typeof GET_ORDER_NUMBER_FAILED;
+}
+
+export interface IClearOrderNumberSuccess {
+  readonly type: typeof CLEAR_ORDER_NUMBER_SUCCESS;
 }
 
 export interface ISetCurrentIngredient {
@@ -95,6 +101,7 @@ export type TIgredientsAndOrdersActions =
   | IGetOrderNumberRequest
   | IGetOrderNumberSuccess
   | IGetOrderNumberFailed
+  | IClearOrderNumberSuccess
   | ISetCurrentIngredient
   | IDeleteCurrentIngredient
   | IAddIngredientToConstructor
@@ -148,6 +155,7 @@ export const getOrderNumber: AppThunk = (ingredients: IIngredient[]) => {
     fetch(URL_API_ORDER, {
       method: "POST",
       headers: {
+        authorization: `${getCookie("accessToken")}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),

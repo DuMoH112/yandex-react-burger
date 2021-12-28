@@ -27,6 +27,7 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 import OrderItemDetails from "../order-item-details/order-item-details";
 
 import {
+  CLEAR_ORDER_NUMBER_SUCCESS,
   DELETE_CURRENT_INGREDIENT,
   getIngredients,
 } from "../../services/actions/ingredients";
@@ -47,6 +48,7 @@ import {
 } from "../../services/actions/orders";
 
 import { IBurgerIngredients } from "../../utils/interfaces";
+import { Loader } from "../loader/loader";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -57,7 +59,9 @@ const App = () => {
     (store: RootState) => store.burgerIngredients && store.user
   );
 
-  const { wsConnected, orders } = useSelector((store: RootState) => store.orders);
+  const { wsConnected, orders } = useSelector(
+    (store: RootState) => store.orders
+  );
   const { ingredients } = useSelector(
     (store: { burgerIngredients: IBurgerIngredients }) =>
       store.burgerIngredients
@@ -119,6 +123,7 @@ const App = () => {
     }
     if (isOpenModalOrder) {
       dispatch(closeOrderModal());
+      dispatch({ type: CLEAR_ORDER_NUMBER_SUCCESS });
     }
     if (location.pathname !== "/") navigate(-1);
   }, [
@@ -137,7 +142,7 @@ const App = () => {
       <AppHeader />
       {isRequesting && !isFailed && (
         <div className={`${styles.loader} text_type_main-medium`}>
-          Загрузка...
+          <Loader />
         </div>
       )}
       {isFailed && !isRequesting && (
