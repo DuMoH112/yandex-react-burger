@@ -16,6 +16,10 @@
   width: 600px;
 }
 
+.loader {
+  text-align: center;
+}
+
 .title {
   grid-area: title;
 }

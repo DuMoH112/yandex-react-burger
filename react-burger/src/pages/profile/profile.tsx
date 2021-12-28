@@ -7,6 +7,7 @@ import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import EditedInput from "../../components/edited-input/edited-inpit";
 import { OrderList } from "../../components/order-list/order-list";
+import { Loader } from "../../components/loader/loader";
 import {
   getUserData,
   loggingOut,
@@ -15,6 +16,10 @@ import {
 
 import { RootState } from "../../services/types";
 import { IUser } from "../../utils/interfaces";
+import {
+  wsUserOrderConnectionClosed,
+  wsUserOrderConnectionStart,
+} from "../../services/actions/orders";
 
 const validateEmail = function validateEmail(email: string) {
   var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -73,7 +78,9 @@ export const ProfilePage = () => {
   // ----------------
 
   // ----/profile/orders----
-  const { orders } = useSelector((store: RootState) => store.orders);
+  const { wsConnected, orders } = useSelector(
+    (store: RootState) => store.orders
+  );
   // -----------------------
 
   useEffect(() => {
@@ -91,6 +98,9 @@ export const ProfilePage = () => {
         }
         break;
       case "/profile/orders":
+        if (!wsConnected) {
+          dispatch(wsUserOrderConnectionStart());
+        }
         setDescription(
           "В этом разделе вы можете просмотреть свою историю заказов"
         );
@@ -98,7 +108,12 @@ export const ProfilePage = () => {
       default:
         break;
     }
-  }, [dispatch, userData, location.pathname]);
+    return () => {
+      if (wsConnected) {
+        dispatch(wsUserOrderConnectionClosed());
+      }
+    };
+  }, [dispatch, userData, location.pathname, wsConnected]);
 
   // ----/logout----
   const onHandleLogout = (e: React.FormEvent) => {
@@ -177,18 +192,26 @@ export const ProfilePage = () => {
           </form>
         )}
         {location.pathname.split("/")[2] === "orders" && (
-          <div className={orders.orders.length !== 0 ? styles.order_list: styles.empty_order_list}>
+          <div
+            className={
+              orders.orders.length !== 0
+                ? styles.order_list
+                : styles.empty_order_list
+            }
+          >
             {orders.orders.length !== 0 ? (
               <OrderList
                 orderList={orders.orders || []}
                 showStatus={true}
                 componentMountedFrom={"orders"}
               />
-            ) : (
+            ) : orders.orders.length === 0 && wsConnected ? (
               <h3 className={`text text_type_main-medium`}>
                 Вы ещё не совершили заказ. Для заказа перейдите на страницу{" "}
                 <Link to="/">конструктура</Link>
               </h3>
+            ) : (
+              <Loader />
             )}
           </div>
         )}

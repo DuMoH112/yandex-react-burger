@@ -40,11 +40,7 @@ import {
 
 import { RootState } from "../../services/types";
 import {
-  ORDER_DELETE_CURRENT_ORDER,
-  wsOrderConnectionClosed,
-  wsOrderConnectionStart,
-  wsUserOrderConnectionClosed,
-  wsUserOrderConnectionStart,
+  ORDER_DELETE_CURRENT_ORDER
 } from "../../services/actions/orders";
 
 import { IBurgerIngredients } from "../../utils/interfaces";
@@ -59,40 +55,16 @@ const App = () => {
     (store: RootState) => store.burgerIngredients && store.user
   );
 
-  const { wsConnected, orders } = useSelector(
-    (store: RootState) => store.orders
-  );
   const { ingredients } = useSelector(
     (store: { burgerIngredients: IBurgerIngredients }) =>
       store.burgerIngredients
   );
 
-  useEffect(() => {
-    let url = location.pathname;
-    let splitedUrl = url.split("/");
-    if (
-      !wsConnected &&
-      (url === "/profile/orders" || splitedUrl[2] === "orders")
-    ) {
-      dispatch(wsUserOrderConnectionStart());
-    }
-    if (!wsConnected && (url === "/feed" || splitedUrl[1] === "feed")) {
-      dispatch(wsOrderConnectionStart());
-    }
-    if (
-      wsConnected &&
-      url !== "/feed" &&
-      url !== "/profile/orders" &&
-      splitedUrl[1] !== "feed" &&
-      splitedUrl[2] !== "orders"
-    ) {
-      dispatch(wsOrderConnectionClosed());
-      dispatch(wsUserOrderConnectionClosed());
-    }
+  useEffect(() => {    
     if (ingredients.length === 0) {
       dispatch(getIngredients());
     }
-  }, [dispatch, wsConnected, location.pathname, ingredients.length, orders]);
+  }, [dispatch, ingredients.length]);
 
   // ------------Refresh access token------------
   const isHaveRefreshToken = Boolean(getCookie("refreshToken"));
