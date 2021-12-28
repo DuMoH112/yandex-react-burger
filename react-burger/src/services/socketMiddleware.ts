@@ -1,20 +1,16 @@
-import { Middleware } from "redux";
+import { Middleware, MiddlewareAPI } from "redux";
 import { getCookie } from "./cookies";
+import { AppDispatch, RootState } from "./types";
+import { wsOrdersActions, wsUserOrdersActions } from "./actions/orders";
 
-type WsActions = {
-  WS_CONNECTION_START: string;
-  WS_CONNECTION_SUCCESS: string;
-  WS_CONNECTION_CLOSED: string;
-  WS_CONNECTION_ERROR: string;
-  WS_GET_MESSAGE: string;
-};
+type TWsActions = typeof wsOrdersActions | typeof wsUserOrdersActions;
 
 export const socketMiddleware = (
   wsUrl: string,
-  actions: WsActions,
+  actions: TWsActions,
   { checkToken }: { checkToken?: boolean }
 ): Middleware => {
-  return (store) => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
 
     const {
@@ -23,7 +19,7 @@ export const socketMiddleware = (
       WS_CONNECTION_CLOSED,
       WS_CONNECTION_ERROR,
       WS_GET_MESSAGE,
-    } = actions;
+    }: TWsActions = actions;
 
     return (next) => (action) => {
       const { dispatch } = store;
@@ -40,11 +36,11 @@ export const socketMiddleware = (
 
       if (socket) {
         socket.onopen = (event) => {
-          dispatch({ type: WS_CONNECTION_SUCCESS, payload: event });
+          dispatch({ type: WS_CONNECTION_SUCCESS });
         };
 
         socket.onerror = (event) => {
-          dispatch({ type: WS_CONNECTION_ERROR, payload: event });
+          dispatch({ type: WS_CONNECTION_ERROR });
         };
 
         socket.onmessage = (event) => {
@@ -56,7 +52,7 @@ export const socketMiddleware = (
         };
 
         socket.onclose = (event) => {
-          dispatch({ type: WS_CONNECTION_CLOSED, payload: event });
+          dispatch({ type: WS_CONNECTION_CLOSED });
         };
       }
 
