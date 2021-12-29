@@ -13,7 +13,7 @@ import { Loader } from "../../components/loader/loader";
 
 export const FeedPage = () => {
   const dispatch = useDispatch();
-  const { wsConnected, orders } = useSelector(
+  const { orders } = useSelector(
     (store) => store.orders
   );
   const orderList = orders.orders || [];
@@ -24,15 +24,11 @@ export const FeedPage = () => {
   };
 
   useEffect(() => {
-    if (!wsConnected) {
-      dispatch(wsOrderConnectionStart());
-    }
+    dispatch(wsOrderConnectionStart());
     return () => {
-      if (wsConnected) {
-        dispatch(wsOrderConnectionClosed());
-      }
+      dispatch(wsOrderConnectionClosed());
     };
-  }, [dispatch, wsConnected]);
+  }, [dispatch]);
 
   orderList.forEach((item: IOrderItem) => {
     if (item.status === "done" || item.status === "pending") {

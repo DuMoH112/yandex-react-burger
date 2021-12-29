@@ -96,9 +96,8 @@ export const ProfilePage = () => {
         }
         break;
       case "/profile/orders":
-        if (!wsConnected) {
-          dispatch(wsUserOrderConnectionStart());
-        }
+        dispatch(wsUserOrderConnectionStart());
+
         setDescription(
           "В этом разделе вы можете просмотреть свою историю заказов"
         );
@@ -107,11 +106,10 @@ export const ProfilePage = () => {
         break;
     }
     return () => {
-      if (wsConnected) {
+      if (location.pathname === "/profile/orders")
         dispatch(wsUserOrderConnectionClosed());
-      }
     };
-  }, [dispatch, name, email, location.pathname, wsConnected]);
+  }, [dispatch, name, email, location.pathname]);
 
   // ----/logout----
   const onHandleLogout = (e: React.FormEvent) => {
