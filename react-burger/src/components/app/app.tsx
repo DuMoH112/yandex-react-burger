@@ -38,7 +38,6 @@ import {
   closeOrderDetailsModal,
 } from "../../services/actions/modal";
 
-import { RootState } from "../../services/types";
 import {
   ORDER_DELETE_CURRENT_ORDER
 } from "../../services/actions/orders";
@@ -52,7 +51,7 @@ const App = () => {
   const location = useLocation();
 
   const { isRequesting, isFailed } = useSelector(
-    (store: RootState) => store.burgerIngredients && store.user
+    (store) => store.burgerIngredients && store.user
   );
 
   const { ingredients } = useSelector(
@@ -60,7 +59,7 @@ const App = () => {
       store.burgerIngredients
   );
 
-  useEffect(() => {    
+  useEffect(() => {
     if (ingredients.length === 0) {
       dispatch(getIngredients());
     }
@@ -83,7 +82,7 @@ const App = () => {
 
   // -------------Close modal window-------------
   const { isOpenModalOrder, isOpenModalIngredient, isOpenModalOrderDetails } =
-    useSelector((store: RootState) => store.modal);
+    useSelector((store) => store.modal);
   const closeModal = useCallback(() => {
     if (isOpenModalIngredient) {
       dispatch(closeIngredientModal());

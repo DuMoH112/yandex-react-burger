@@ -3,13 +3,12 @@ import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-component
 import stylesDetails from "./order-details.module.css";
 import { useSelector } from "../../services/hooks";
 
-import { IBurgerIngredients } from "../../utils/interfaces";
 import { Loader } from "../loader/loader";
 
 const OrderDetails = () => {
-  const orderNumber = useSelector(
-    (store: { burgerIngredients: IBurgerIngredients }) =>
-      store.burgerIngredients.order.orderNumber
+  const { orderNumber } = useSelector(
+    (store) =>
+      store.burgerIngredients
   );
   return orderNumber ? (
     <div className={stylesDetails.root}>
@@ -27,7 +26,7 @@ const OrderDetails = () => {
     </div>
   ) : (
     <div className={`${stylesDetails.root} ${stylesDetails.loading} text_type_main-default`}>
-        <Loader />
+      <Loader />
     </div>
   );
 };

@@ -6,10 +6,9 @@ import styles from "./order-item-details.module.css";
 import {
   IBurgerIngredients,
   IIngredient,
-  IModal,
   IOrderItem,
 } from "../../utils/interfaces";
-import { RootState } from "../../services/types";
+
 import dateConverter from "../../utils/dateConverter";
 
 interface IIngredientObj {
@@ -21,10 +20,10 @@ interface IIngredientObj {
 
 const OrderItemDetails: FC = () => {
   const { currentOrder, orders } = useSelector(
-    (store: RootState) => store.orders
+    (store) => store.orders
   );
   const { isOpenModalOrderDetails } = useSelector(
-    (store: { modal: IModal }) => store.modal
+    (store) => store.modal
   );
   const ingredients = useSelector(
     (store: { burgerIngredients: IBurgerIngredients }) =>
@@ -130,9 +129,8 @@ const OrderItemDetails: FC = () => {
           </p>
         )}
         <p
-          className={`text text_type_main-medium ${
-            isOpenModalOrderDetails ? "mt-3 mb-1" : "mb-3"
-          }`}
+          className={`text text_type_main-medium ${isOpenModalOrderDetails ? "mt-3 mb-1" : "mb-3"
+            }`}
         >
           {order.name}
         </p>

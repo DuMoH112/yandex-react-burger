@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "../../services/hooks";
 import styles from "./feed.module.css";
 import { OrderList } from "../../components/order-list/order-list";
 
-import { IOrderItem, IOrderNumbers, IOrderState } from "../../utils/interfaces";
+import { IOrderItem, IOrderNumbers } from "../../utils/interfaces";
 import {
   wsOrderConnectionClosed,
   wsOrderConnectionStart,
@@ -14,7 +14,7 @@ import { Loader } from "../../components/loader/loader";
 export const FeedPage = () => {
   const dispatch = useDispatch();
   const { wsConnected, orders } = useSelector(
-    (store: { orders: IOrderState }) => store.orders
+    (store) => store.orders
   );
   const orderList = orders.orders || [];
 

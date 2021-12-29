@@ -14,8 +14,6 @@ import {
   patchUserData,
 } from "../../services/actions/user";
 
-import { RootState } from "../../services/types";
-import { IUser } from "../../utils/interfaces";
 import {
   wsUserOrderConnectionClosed,
   wsUserOrderConnectionStart,
@@ -44,7 +42,7 @@ export const ProfilePage = () => {
   }, [location.pathname]);
 
   // ----/profile----
-  const { userData } = useSelector((store: { user: IUser }) => store.user);
+  const { name, email } = useSelector((store) => store.user);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -79,7 +77,7 @@ export const ProfilePage = () => {
 
   // ----/profile/orders----
   const { wsConnected, orders } = useSelector(
-    (store: RootState) => store.orders
+    (store) => store.orders
   );
   // -----------------------
 
@@ -90,11 +88,11 @@ export const ProfilePage = () => {
           "В этом разделе вы можете изменить свои персональные данные"
         );
         if (
-          JSON.stringify(userData) === JSON.stringify({ email: "", name: "" })
+          JSON.stringify(!Boolean(email) && !Boolean(name))
         ) {
           dispatch(getUserData());
         } else {
-          setForm({ name: userData.name, email: userData.email, password: "" });
+          setForm({ name: name, email: email, password: "" });
         }
         break;
       case "/profile/orders":
@@ -113,7 +111,7 @@ export const ProfilePage = () => {
         dispatch(wsUserOrderConnectionClosed());
       }
     };
-  }, [dispatch, userData, location.pathname, wsConnected]);
+  }, [dispatch, name, email, location.pathname, wsConnected]);
 
   // ----/logout----
   const onHandleLogout = (e: React.FormEvent) => {

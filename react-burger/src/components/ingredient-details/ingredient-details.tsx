@@ -7,7 +7,6 @@ import stylesDetails from "./ingredient-details.module.css";
 import {
   IBurgerIngredients,
   IIngredient,
-  IModal,
 } from "../../utils/interfaces";
 
 const IngredientDetails: FC = () => {
@@ -16,7 +15,7 @@ const IngredientDetails: FC = () => {
       store.burgerIngredients
   );
   const { isOpenModalIngredient } = useSelector(
-    (store: { modal: IModal }) => store.modal
+    (store) => store.modal
   );
   const { id } = useParams();
 
@@ -24,8 +23,8 @@ const IngredientDetails: FC = () => {
     return currentIngredient !== null
       ? currentIngredient
       : (ingredients as IIngredient[]).find(
-          (item: IIngredient) => item._id === id
-        );
+        (item: IIngredient) => item._id === id
+      );
   }, [currentIngredient, ingredients, id]);
 
   const className = isOpenModalIngredient

@@ -10,12 +10,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { loginning } from "../../services/actions/user";
 
-import { IUser } from "../../utils/interfaces";
-
 export const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuth } = useSelector((store: { user: IUser }) => store.user);
+  const { isAuth } = useSelector((store) => store.user);
   const [form, setForm] = useState({ email: "", password: "" });
 
   useEffect(() => {
