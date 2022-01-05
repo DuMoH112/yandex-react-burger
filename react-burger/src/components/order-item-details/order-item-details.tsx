@@ -1,6 +1,6 @@
-import { FC, useCallback } from "react";
-import { useSelector } from "../../services/hooks";
-import { useParams } from "react-router-dom";
+import { FC, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "../../services/hooks";
+import { useLocation, useParams } from "react-router-dom";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./order-item-details.module.css";
 import {
@@ -10,6 +10,7 @@ import {
 } from "../../utils/interfaces";
 
 import dateConverter from "../../utils/dateConverter";
+import { wsOrderConnectionClosed, wsOrderConnectionStart, wsUserOrderConnectionClosed, wsUserOrderConnectionStart } from "../../services/actions/orders";
 
 interface IIngredientObj {
   count: number;
@@ -19,6 +20,9 @@ interface IIngredientObj {
 }
 
 const OrderItemDetails: FC = () => {
+  const location = useLocation();
+  const dispatch = useDispatch();
+
   const { currentOrder, orders } = useSelector(
     (store) => store.orders
   );
@@ -38,6 +42,41 @@ const OrderItemDetails: FC = () => {
     ? currentOrder
     : orders.orders.find((item: IOrderItem) => item._id === id);
   let total = 0;
+
+  useEffect(() => {
+    let isFeed = location.pathname.split("/")[1] === "feed";
+    let isOrders = location.pathname.split("/")[2] === "orders"
+    let isOpenedHere = false;
+
+    console.log("BEFORE", {
+      isFeed: isFeed,
+      isOrders: isOrders,
+      isOpenedHere: isOpenedHere
+    });
+    
+    if (isFeed) {
+      isOpenedHere = true;
+      dispatch(wsOrderConnectionStart());
+    }
+    if (isOrders) {
+      isOpenedHere = true;
+      dispatch(wsUserOrderConnectionStart());
+    }
+
+    return () => {
+      console.log("AFTER", {
+        isFeed: isFeed,
+        isOrders: isOrders,
+        isOpenedHere: isOpenedHere
+      });
+      if (isOpenedHere){
+        if (isFeed)
+          dispatch(wsOrderConnectionClosed())
+        else if (isOrders)
+          dispatch(wsUserOrderConnectionClosed())
+      }
+    }
+  }, [dispatch, location.pathname, orders.orders]);
 
   order?.ingredients.forEach((el) => {
     let isIngredient = ingredients.find((el_i: IIngredient) => el_i._id === el);

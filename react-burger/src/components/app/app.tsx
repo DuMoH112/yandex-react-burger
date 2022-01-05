@@ -106,8 +106,16 @@ const App = () => {
     isOpenModalOrder,
   ]);
   // --------------------------------------------
-
-  const background = location.state && location.state.background;
+  
+  switch (location.pathname.split("/")[1]) {
+    case "profile":
+    case "feed":
+      location.state = isOpenModalOrderDetails ? location.state : null;  
+      break;
+    default:
+      break;
+  }
+  let background = location.state && location.state.background;
   return (
     <div className={styles.root}>
       <AppHeader />

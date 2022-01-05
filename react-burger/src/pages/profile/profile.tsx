@@ -18,6 +18,7 @@ import {
   wsUserOrderConnectionClosed,
   wsUserOrderConnectionStart,
 } from "../../services/actions/orders";
+import { IUser } from "../../utils/interfaces";
 
 const validateEmail = function validateEmail(email: string) {
   var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -42,7 +43,7 @@ export const ProfilePage = () => {
   }, [location.pathname]);
 
   // ----/profile----
-  const { name, email } = useSelector((store) => store.user);
+  const { userData } = useSelector((store: { user: IUser }) => store.user);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -88,11 +89,11 @@ export const ProfilePage = () => {
           "В этом разделе вы можете изменить свои персональные данные"
         );
         if (
-          JSON.stringify(!Boolean(email) && !Boolean(name))
+          JSON.stringify(userData) === JSON.stringify({ email: "", name: "" })
         ) {
           dispatch(getUserData());
         } else {
-          setForm({ name: name, email: email, password: "" });
+          setForm({ name: userData.name, email: userData.email, password: "" });
         }
         break;
       case "/profile/orders":
@@ -109,7 +110,7 @@ export const ProfilePage = () => {
       if (location.pathname === "/profile/orders")
         dispatch(wsUserOrderConnectionClosed());
     };
-  }, [dispatch, name, email, location.pathname]);
+  }, [dispatch, userData, location.pathname]);
 
   // ----/logout----
   const onHandleLogout = (e: React.FormEvent) => {
