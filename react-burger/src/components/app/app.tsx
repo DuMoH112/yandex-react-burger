@@ -38,9 +38,7 @@ import {
   closeOrderDetailsModal,
 } from "../../services/actions/modal";
 
-import {
-  ORDER_DELETE_CURRENT_ORDER
-} from "../../services/actions/orders";
+import { ORDER_DELETE_CURRENT_ORDER } from "../../services/actions/orders";
 
 import { IBurgerIngredients } from "../../utils/interfaces";
 import { Loader } from "../loader/loader";
@@ -106,11 +104,11 @@ const App = () => {
     isOpenModalOrder,
   ]);
   // --------------------------------------------
-  
+
   switch (location.pathname.split("/")[1]) {
     case "profile":
     case "feed":
-      location.state = isOpenModalOrderDetails ? location.state : null;  
+      location.state = isOpenModalOrderDetails ? location.state : null;
       break;
     default:
       break;

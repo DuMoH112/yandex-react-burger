@@ -77,9 +77,7 @@ export const ProfilePage = () => {
   // ----------------
 
   // ----/profile/orders----
-  const { wsConnected, orders } = useSelector(
-    (store) => store.orders
-  );
+  const { wsConnected, orders } = useSelector((store) => store.orders);
   // -----------------------
 
   useEffect(() => {

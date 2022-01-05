@@ -10,7 +10,12 @@ import {
 } from "../../utils/interfaces";
 
 import dateConverter from "../../utils/dateConverter";
-import { wsOrderConnectionClosed, wsOrderConnectionStart, wsUserOrderConnectionClosed, wsUserOrderConnectionStart } from "../../services/actions/orders";
+import {
+  wsOrderConnectionClosed,
+  wsOrderConnectionStart,
+  wsUserOrderConnectionClosed,
+  wsUserOrderConnectionStart,
+} from "../../services/actions/orders";
 
 interface IIngredientObj {
   count: number;
@@ -23,12 +28,8 @@ const OrderItemDetails: FC = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const { currentOrder, orders } = useSelector(
-    (store) => store.orders
-  );
-  const { isOpenModalOrderDetails } = useSelector(
-    (store) => store.modal
-  );
+  const { currentOrder, orders } = useSelector((store) => store.orders);
+  const { isOpenModalOrderDetails } = useSelector((store) => store.modal);
   const ingredients = useSelector(
     (store: { burgerIngredients: IBurgerIngredients }) =>
       store.burgerIngredients.ingredients
@@ -45,15 +46,9 @@ const OrderItemDetails: FC = () => {
 
   useEffect(() => {
     let isFeed = location.pathname.split("/")[1] === "feed";
-    let isOrders = location.pathname.split("/")[2] === "orders"
+    let isOrders = location.pathname.split("/")[2] === "orders";
     let isOpenedHere = false;
 
-    console.log("BEFORE", {
-      isFeed: isFeed,
-      isOrders: isOrders,
-      isOpenedHere: isOpenedHere
-    });
-    
     if (isFeed) {
       isOpenedHere = true;
       dispatch(wsOrderConnectionStart());
@@ -64,19 +59,11 @@ const OrderItemDetails: FC = () => {
     }
 
     return () => {
-      console.log("AFTER", {
-        isFeed: isFeed,
-        isOrders: isOrders,
-        isOpenedHere: isOpenedHere
-      });
-      if (isOpenedHere){
-        if (isFeed)
-          dispatch(wsOrderConnectionClosed())
-        else if (isOrders)
-          dispatch(wsUserOrderConnectionClosed())
-      }
-    }
-  }, [dispatch, location.pathname, orders.orders]);
+      if (isFeed && isOpenedHere) dispatch(wsOrderConnectionClosed());
+      else if (isOrders && isOpenedHere)
+        dispatch(wsUserOrderConnectionClosed());
+    };
+  }, [dispatch, location.pathname]);
 
   order?.ingredients.forEach((el) => {
     let isIngredient = ingredients.find((el_i: IIngredient) => el_i._id === el);
@@ -168,8 +155,9 @@ const OrderItemDetails: FC = () => {
           </p>
         )}
         <p
-          className={`text text_type_main-medium ${isOpenModalOrderDetails ? "mt-3 mb-1" : "mb-3"
-            }`}
+          className={`text text_type_main-medium ${
+            isOpenModalOrderDetails ? "mt-3 mb-1" : "mb-3"
+          }`}
         >
           {order.name}
         </p>
