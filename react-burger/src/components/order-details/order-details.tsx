@@ -4,12 +4,14 @@ import stylesDetails from "./order-details.module.css";
 import { useSelector } from "../../services/hooks";
 
 import { Loader } from "../loader/loader";
+import { IBurgerIngredients } from "../../utils/interfaces";
 
 const OrderDetails = () => {
   const { orderNumber } = useSelector(
-    (store) =>
-      store.burgerIngredients
+    (store: { burgerIngredients: IBurgerIngredients }) =>
+      store.burgerIngredients.order
   );
+
   return orderNumber ? (
     <div className={stylesDetails.root}>
       <h4 className="text_type_digits-large mt-1 mb-4">{orderNumber}</h4>
@@ -25,7 +27,9 @@ const OrderDetails = () => {
       </span>
     </div>
   ) : (
-    <div className={`${stylesDetails.root} ${stylesDetails.loading} text_type_main-default`}>
+    <div
+      className={`${stylesDetails.root} ${stylesDetails.loading} text_type_main-default`}
+    >
       <Loader />
     </div>
   );
