@@ -1,13 +1,14 @@
 .container {
   display: grid;
   align-items: flex-start;
-  grid-template-columns: 380px 480px;
+  grid-template-columns: 460px 840px;
   margin-left: auto;
   margin-right: auto;
   margin: 15vh auto auto auto;
-  max-width: 880px;
+  max-width: 1300px;
 }
 
+/* ----/profile---- */
 .form {
   display: flex;
   flex-direction: column;
@@ -23,7 +24,22 @@
 .form > div > div {
   width: 100%;
 }
+/* ---------------- */
 
+/* ----/profile/orders---- */
+.order_list {
+  margin: -10vh auto auto auto;
+}
+.empty_order_list {
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.empty_order_list a {
+  text-decoration: none;
+  color: #8585ad;
+}
+/* ----------------------- */
 .buttonsContainer {
   display: flex;
 }

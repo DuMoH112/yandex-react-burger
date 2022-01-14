@@ -1,22 +1,30 @@
-import { useMemo } from "react";
+import { FC, useMemo } from "react";
 import { useParams } from "react-router";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
 
 import stylesDetails from "./ingredient-details.module.css";
 
-import { IBurgerIngredients, IIngredient, IModal } from "../../utils/interfaces";
+import {
+  IBurgerIngredients,
+  IIngredient,
+} from "../../utils/interfaces";
 
-const IngredientDetails = () => {
+const IngredientDetails: FC = () => {
   const { currentIngredient, ingredients } = useSelector(
-    (store: {burgerIngredients: IBurgerIngredients}) => store.burgerIngredients
+    (store: { burgerIngredients: IBurgerIngredients }) =>
+      store.burgerIngredients
   );
-  const { isOpenModalIngredient } = useSelector((store: {modal: IModal}) => store.modal);
+  const { isOpenModalIngredient } = useSelector(
+    (store) => store.modal
+  );
   const { id } = useParams();
 
   const ingredient = useMemo(() => {
-    return JSON.stringify(currentIngredient) !== "{}"
+    return currentIngredient !== null
       ? currentIngredient
-      : (ingredients as IIngredient[]).find((item: IIngredient) => item._id === id);
+      : (ingredients as IIngredient[]).find(
+        (item: IIngredient) => item._id === id
+      );
   }, [currentIngredient, ingredients, id]);
 
   const className = isOpenModalIngredient
@@ -55,6 +63,6 @@ const IngredientDetails = () => {
   ) : (
     <></>
   );
-}
+};
 
 export default IngredientDetails;

@@ -2,7 +2,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 
 import stylesBurgerItem from './burger-ingredients-item.module.css';
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
+import { useSelector } from "../../services/hooks";
 
 import { IBurgerIngredients, IIngredient } from '../../utils/interfaces';
 

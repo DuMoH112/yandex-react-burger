@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 import styles from "./forgot-password.module.css";
 import {
@@ -10,13 +10,11 @@ import {
 
 import { forgotPassword } from "../../services/actions/user";
 
-import { IUser } from "../../utils/interfaces";
-
 export const FrogotPasswordPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuth } = useSelector((store: { user: IUser }) => store.user);
-  const [form, setForm] = useState<{email: string}>({ email: "" });
+  const { isAuth } = useSelector((store) => store.user);
+  const [form, setForm] = useState<{ email: string }>({ email: "" });
 
   useEffect(() => {
     if (isAuth) navigate("/");

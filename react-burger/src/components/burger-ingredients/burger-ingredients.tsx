@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks";
 import { useState, useCallback, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router";
 
@@ -6,7 +6,6 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import BurgerIngredientsItem from "../burger-ingredients-item/burger-ingredients-item";
 import stylesBurgerIngredients from "./burger-ingredients.module.css";
-import { useSelector } from "react-redux";
 
 import { SET_CURRENT_INGREDIENT } from "../../services/actions/ingredients";
 import { openIngredientModal } from "../../services/actions/modal";

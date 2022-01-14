@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks";
 import { useMemo } from "react";
 import { useDrop } from "react-dnd";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ import {
 } from "../../services/actions/ingredients";
 import { openOrderModal } from "../../services/actions/modal";
 
-import { IBurgerIngredients, IIngredient, IUser } from "../../utils/interfaces";
+import { IBurgerIngredients, IIngredient } from "../../utils/interfaces";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const BurgerConstructor = () => {
     (store: { burgerIngredients: IBurgerIngredients }) =>
       store.burgerIngredients
   );
-  const { isAuth } = useSelector((store: { user: IUser }) => store.user);
+  const { isAuth } = useSelector((store) => store.user);
   const navigate = useNavigate();
 
   const [, dropTarget] = useDrop({

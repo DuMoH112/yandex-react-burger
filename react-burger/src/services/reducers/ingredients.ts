@@ -6,6 +6,7 @@ import {
     GET_ORDER_NUMBER_REQUEST,
     GET_ORDER_NUMBER_SUCCESS,
     GET_ORDER_NUMBER_FAILED,
+    CLEAR_ORDER_NUMBER_SUCCESS,
     SET_CURRENT_INGREDIENT,
     DELETE_CURRENT_INGREDIENT,
     ADD_INGREDIENT_TO_CONSTRUCTOR,
@@ -66,6 +67,12 @@ export const getIngredientsReducer = (state = initialState, action: TIgredientsA
                 isRequesting: false,
                 isFailed: false,
                 order: { orderNumber: action.orderNumber }
+            }
+        }
+        case CLEAR_ORDER_NUMBER_SUCCESS: {
+            return {
+                ...state,
+                order: { orderNumber: 0 }
             }
         }
         case GET_ORDER_NUMBER_FAILED: {

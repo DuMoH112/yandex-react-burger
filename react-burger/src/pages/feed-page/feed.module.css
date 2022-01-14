@@ -1,0 +1,81 @@
+.root {
+  display: grid;
+  grid-template-areas:
+    "title title"
+    "orders_list info";
+  grid-template-columns: 630px 630px;
+  height: calc(100% - 60px);
+  max-width: 1260px;
+  width: 100%;
+  height: calc(100vh - 128px);
+}
+
+.orderList {
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 600px;
+}
+
+.loader {
+  text-align: center;
+}
+
+.title {
+  grid-area: title;
+}
+
+.statusContainer {
+  grid-area: info;
+  display: grid;
+  grid-template-columns: 315px 315px;
+}
+
+.status {
+  width: 250px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 152px;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 12px;
+  overflow-y: auto;
+}
+
+.done {
+  color: #00cccc;
+}
+
+.textShadow {
+  text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25),
+    0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.info::-webkit-scrollbar,
+.list::-webkit-scrollbar {
+  width: 2px;
+}
+
+.info::-webkit-scrollbar-track,
+.list::-webkit-scrollbar-track {
+  background: #19191c;
+}
+
+.info::-webkit-scrollbar-thumb,
+.list::-webkit-scrollbar-thumb {
+  background: #af5eaa;
+  border: 1px solid #19191c;
+  border-radius: 7px;
+}

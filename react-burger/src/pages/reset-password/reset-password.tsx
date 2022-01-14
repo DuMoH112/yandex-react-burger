@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/hooks";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import styles from "./reset-password.module.css";
@@ -10,13 +10,11 @@ import {
 
 import { resetPassword } from "../../services/actions/user";
 
-import { IUser } from "../../utils/interfaces";
-
 export const ResetPasswordPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuth } = useSelector((store: {user: IUser}) => store.user);
+  const { isAuth } = useSelector((store) => store.user);
   const [form, setValue] = useState({ password: "", token: "" });
   const [isVisiblePassword, setIsVisiblePassword] = useState(false);
 
